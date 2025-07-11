@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DM Sneakers - Chaussures tendance pour hommes et femmes</title>
+    <meta name="description" content="Découvrez notre collection exclusive de chaussures tendance pour hommes et femmes. Livraison rapide au Togo, Bénin et Ghana.">
+    <meta name="keywords" content="chaussures, sneakers, mode, Togo, Bénin, Ghana, baskets, chaussures homme, chaussures femme">
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            600: '#3B82F6',
+                            700: '#2563EB',
+                        },
+                        secondary: {
+                            600: '#EC4899',
+                            700: '#DB2777',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        /* Custom styles */
+        .smooth-transition {
+            transition: all 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .dropdown-enter {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        .dropdown-enter-active {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.2s ease;
+        }
+        .dropdown-exit {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .dropdown-exit-active {
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.2s ease;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Business Selection Dropdown -->
+    <div class="fixed top-4 left-4 z-50">
+        <div class="relative">
+            <button 
+                id="businessDropdownButton"
+                class="bg-white shadow-md rounded-lg px-4 py-2 flex items-center space-x-2 hover:bg-gray-50 smooth-transition"
+            >
+                <i data-lucide="briefcase" class="w-5 h-5 text-primary-600"></i>
+                <span class="font-medium">Mes Businesses</span>
+                <i data-lucide="chevron-down" class="w-4 h-4 smooth-transition" id="dropdownArrow"></i>
+            </button>
+            
+            <div 
+                id="businessDropdown"
+                class="absolute left-0 mt-2 w-64 bg-white rounded-lg shadow-xl py-2 z-50 hidden"
+            >
+                <a 
+                    href="index.html" 
+                    class="flex items-center px-4 py-3 hover:bg-gray-50 smooth-transition"
+                >
+                    <div class="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center mr-3">
+                        <i data-lucide="map-pin" class="w-4 h-4 text-primary-600"></i>
+                    </div>
+                    <div>
+                        <p class="font-medium">DM Biométrie Boost</p>
+                        <p class="text-xs text-gray-500">Service d'accompagnement biométrie</p>
+                    </div>
+                </a>
+                <a 
+                    href="#" 
+                    class="flex items-center px-4 py-3 hover:bg-gray-50 smooth-transition bg-gray-50"
+                >
+                    <div class="w-8 h-8 bg-secondary-100 rounded-lg flex items-center justify-center mr-3">
+                        <i data-lucide="shopping-bag" class="w-4 h-4 text-secondary-600"></i>
+                    </div>
+                    <div>
+                        <p class="font-medium">DM Sneakers</p>
+                        <p class="text-xs text-gray-500">Boutique de chaussures tendance</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-gradient-to-r from-primary-600 to-secondary-600 rounded-lg flex items-center justify-center">
+                        <i data-lucide="shopping-bag" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-gray-900">DM Sneakers</span>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex space-x-8">
+                    <button onclick="scrollToSection('hero')" class="text-gray-700 hover:text-primary-600 transition-colors">Accueil</button>
+                    <button onclick="scrollToSection('products')" class="text-gray-700 hover:text-primary-600 transition-colors">Collection</button>
+                    <button onclick="scrollToSection('categories')" class="text-gray-700 hover:text-primary-600 transition-colors">Catégories</button>
+                    <button onclick="scrollToSection('about')" class="text-gray-700 hover:text-primary-600 transition-colors">À propos</button>
+                    <button onclick="scrollToSection('testimonials')" class="text-gray-700 hover:text-primary-600 transition-colors">Avis</button>
+                </nav>
+                
+                <!-- Desktop CTA Buttons -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <button class="p-2 hover:bg-gray-100 rounded-full smooth-transition">
+                        <i data-lucide="search" class="w-5 h-5 text-gray-700"></i>
+                    </button>
+                    <button class="p-2 hover:bg-gray-100 rounded-full smooth-transition relative">
+                        <i data-lucide="shopping-cart" class="w-5 h-5 text-gray-700"></i>
+                        <span class="absolute -top-1 -right-1 bg-primary-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">3</span>
+                    </button>
+                    <button 
+                        onclick="scrollToSection('contact')"
+                        class="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition-colors smooth-transition"
+                    >
+                        Contact
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button
+                    onclick="toggleMobileMenu()"
+                    class="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                >
+                    <i data-lucide="menu" id="mobileMenuIcon" class="w-6 h-6"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Navigation -->
+            <div id="mobileMenu" class="hidden md:hidden py-4 border-t border-gray-200">
+                <nav class="flex flex-col space-y-4">
+                    <button onclick="scrollToSection('hero')" class="text-left text-gray-700 hover:text-primary-600 transition-colors">Accueil</button>
+                    <button onclick="scrollToSection('products')" class="text-left text-gray-700 hover:text-primary-600 transition-colors">Collection</button>
+                    <button onclick="scrollToSection('categories')" class="text-left text-gray-700 hover:text-primary-600 transition-colors">Catégories</button>
+                    <button onclick="scrollToSection('about')" class="text-left text-gray-700 hover:text-primary-600 transition-colors">À propos</button>
+                    <button onclick="scrollToSection('testimonials')" class="text-left text-gray-700 hover:text-primary-600 transition-colors">Avis</button>
+                    <button onclick="scrollToSection('contact')" class="text-left text-gray-700 hover:text-primary-600 transition-colors">Contact</button>
+                    <div class="flex space-x-4 pt-2">
+                        <button class="p-2 hover:bg-gray-100 rounded-full smooth-transition">
+                            <i data-lucide="search" class="w-5 h-5 text-gray-700"></i>
+                        </button>
+                        <button class="p-2 hover:bg-gray-100 rounded-full smooth-transition relative">
+                            <i data-lucide="shopping-cart" class="w-5 h-5 text-gray-700"></i>
+                            <span class="absolute -top-1 -right-1 bg-primary-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">3</span>
+                        </button>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-primary-600 to-secondary-600 opacity-10 z-0"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="text-center lg:text-left">
+                    <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+                        Chaussures tendance
+                        <span class="bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent block">pour votre style</span>
+                    </h1>
+                    <p class="text-xl text-gray-600 mb-8 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                        Découvrez notre collection exclusive de sneakers et chaussures pour hommes et femmes. 
+                        Qualité supérieure, confort inégalé et style unique.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <button 
+                            onclick="scrollToSection('products')"
+                            class="bg-gradient-to-r from-primary-600 to-secondary-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:opacity-90 transition-all transform hover:scale-105 smooth-transition"
+                        >
+                            Voir la collection
+                            <i data-lucide="arrow-right" class="w-5 h-5 ml-2 inline"></i>
+                        </button>
+                        <button 
+                            onclick="scrollToSection('categories')"
+                            class="border-2 border-primary-600 text-primary-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-primary-600 hover:text-white transition-all smooth-transition"
+                        >
+                            Parcourir catégories
+                        </button>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="relative animate-float">
+                        <img 
+                            src="https://images.unsplash.com/photo-1600269452121-4f2416e55c28?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1065&q=80" 
+                            alt="Nouvelle collection de sneakers" 
+                            class="rounded-2xl shadow-2xl w-full max-w-xl mx-auto"
+                        />
+                        <div class="absolute -bottom-6 -right-6 bg-white p-4 rounded-xl shadow-lg">
+                            <div class="flex items-center">
+                                <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mr-3">
+                                    <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-gray-900">4.9/5</p>
+                                    <p class="text-xs text-gray-500">Avis clients</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brands Section -->
+    <section class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-8 items-center justify-center">
+                <img src="https://logos-world.net/wp-content/uploads/2020/04/Nike-Logo.png" alt="Nike" class="h-8 object-contain opacity-60 hover:opacity-100 smooth-transition">
+                <img src="https://logos-world.net/wp-content/uploads/2020/04/Adidas-Logo.png" alt="Adidas" class="h-8 object-contain opacity-60 hover:opacity-100 smooth-transition">
+                <img src="https://logos-world.net/wp-content/uploads/2020/04/Puma-Logo.png" alt="Puma" class="h-8 object-contain opacity-60 hover:opacity-100 smooth-transition">
+                <img src="https://logos-world.net/wp-content/uploads/2020/04/New-Balance-Logo.png" alt="New Balance" class="h-8 object-contain opacity-60 hover:opacity-100 smooth-transition">
+                <img src="https://logos-world.net/wp-content/uploads/2020/04/Reebok-Logo.png" alt="Reebok" class="h-8 object-contain opacity-60 hover:opacity-100 smooth-transition">
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section id="categories" class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                    Parcourez nos catégories
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                    Trouvez les chaussures parfaites pour chaque occasion
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl smooth-transition group">
+                    <div class="relative overflow-hidden h-64">
+                        <img 
+                            src="https://images.unsplash.com/photo-1600269452121-4f2416e55c28?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1065&q=80" 
+                            alt="Sneakers Homme" 
+                            class="w-full h-full object-cover group-hover:scale-105 smooth-transition"
+                        />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
+                            <h3 class="text-2xl font-bold text-white">Hommes</h3>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl smooth-transition group">
+                    <div class="relative overflow-hidden h-64">
+                        <img 
+                            src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80" 
+                            alt="Sneakers Femme" 
+                            class="w-full h-full object-cover group-hover:scale-105 smooth-transition"
+                        />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
+                            <h3 class="text-2xl font-bold text-white">Femmes</h3>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl smooth-transition group">
+                    <div class="relative overflow-hidden h-64">
+                        <img 
+                            src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" 
+                            alt="Sneakers Sport" 
+                            class="w-full h-full object-cover group-hover:scale-105 smooth-transition"
+                        />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
+                            <h3 class="text-2xl font-bold text-white">Sport</h3>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl smooth-transition group">
+                    <div class="relative overflow-hidden h-64">
+                        <img 
+                            src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80" 
+                            alt="Sneakers Casual" 
+                            class="w-full h-full object-cover group-hover:scale-105 smooth-transition"
+                        />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
+                            <h3 class="text-2xl font-bold text-white">Casual</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section id="products" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                    Notre collection
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                    Découvrez nos chaussures les plus populaires
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Product 1 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg product-card smooth-transition">
+                    <div class="relative">
+                        <img 
+                            src="https://images.unsplash.com/photo-1600269452121-4f2416e55c28?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1065&q=80" 
+                            alt="Nike Air Max" 
+                            class="w-full h-64 object-cover"
+                        />
+                        <div class="absolute top-4 right-4">
+                            <button class="bg-white/80 backdrop-blur-sm p-2 rounded-full hover:bg-white smooth-transition">
+                                <i data-lucide="heart" class="w-5 h-5 text-gray-700"></i>
+                            </button>
+                        </div>
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
+                            <span class="text-xs text-white bg-primary-600 px-2 py-1 rounded">Nouveau</span>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-semibold text-gray-900">Nike Air Max 270</h3>
+                            <span class="font-bold text-primary-600">45.000 FCFA</span>
+                        </div>
+                        <div class="flex items-center mb-3">
+                            <div class="flex">
+                                <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+                            </div>
+                            <span class="text-xs text-gray-500 ml-2">(24)</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="flex-1 bg-primary-600 text-white py-2 rounded-lg hover:bg-primary-700 smooth-transition">
+                                Ajouter au panier
+                            </button>
+                            <button class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-lg hover:bg-gray-200 smooth-transition">
+                                <i data-lucide="eye" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 2 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg product-card smooth-transition">
+                    <div class="relative">
+                        <img 
+                            src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" 
+                            alt="Puma RS-X" 
+                            class="w-full h-64 object-cover"
+                        />
+                        <div class="absolute top-4 right-4">
+                            <button class="bg-white/80 backdrop-blur-sm p-2 rounded-full hover:bg-white smooth-transition">
+                                <i data-lucide="heart" class="w-5 h-5 text-gray-700"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-semibold text-gray-900">Puma RS-X</h3>
+                            <span class="font-bold text-primary-600">38.000 FCFA</span>
+                        </div>
+                        <div class="flex items-center mb-3">
+                            <div class="flex">
+                                <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+                            </div>
+                            <span class="text-xs text-gray-500 ml-2">(18)</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="flex-1 bg-primary-600 text-white py-2 rounded-lg hover:bg-primary-700 smooth-transition">
+                                Ajouter au panier
+                            </button>
+                            <button class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-lg hover:bg-gray-200 smooth-transition">
+                                <i data-lucide="eye" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 3 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg product-card smooth-transition">
+                    <div class="relative">
+                        <img 
+                            src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1025&q=80" 
+                            alt="Adidas Ultraboost" 
+                            class="w-full h-64 object-cover"
+                        />
+                        <div class="absolute top-4 right-4">
+                            <button class="bg-white/80 backdrop-blur-sm p-2 rounded-full hover:bg-white smooth-transition">
+                                <i data-lucide="heart" class="w-5 h-5 text-gray-700"></i>
+                            </button>
+                        </div>
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
+                            <span class="text-xs text-white bg-red-500 px-2 py-1 rounded">Promo</span>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-semibold text-gray-900">Adidas Ultraboost</h3>
+                            <div>
+                                <span class="font-bold text-primary-600">52.000 FCFA</span>
+                                <span class="text-xs text-gray-500 line-through ml-1">60.000 FCFA</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center mb-3">
+                            <div class="flex">
+                                <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+                            </div>
+                            <span class="text-xs text-gray-500 ml-2">(32)</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="flex-1 bg-primary-600 text-white py-2 rounded-lg hover:bg-primary-700 smooth-transition">
+                                Ajouter au panier
+                            </button>
+                            <button class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-lg hover:bg-gray-200 smooth-transition">
+                                <i data-lucide="eye" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 4 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg product-card smooth-transition">
+                    <div class="relative">
+                        <img 
+                            src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80" 
+                            alt="Nike Air Force" 
+                            class="w-full h-64 object-cover"
+                        />
+                        <div class="absolute top-4 right-4">
+                            <button class="bg-white/80 backdrop-blur-sm p-2 rounded-full hover:bg-white smooth-transition">
+                                <i data-lucide="heart" class="w-5 h-5 text-gray-700"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-semibold text-gray-900">Nike Air Force 1</h3>
+                            <span class="font-bold text-primary-600">42.000 FCFA</span>
+                        </div>
+                        <div class="flex items-center mb-3">
+                            <div class="flex">
+                                <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+                            </div>
+                            <span class="text-xs text-gray-500 ml-2">(29)</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="flex-1 bg-primary-600 text-white py-2 rounded-lg hover:bg-primary-700 smooth-transition">
+                                Ajouter au panier
+                            </button>
+                            <button class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-lg hover:bg-gray-200 smooth-transition">
+                                <i data-lucide="eye" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <button 
+                    onclick="scrollToSection('products')"
+                    class="border-2 border-primary-600 text-primary-600 px-8 py-3 rounded-lg text-lg font-semibold hover:bg-primary-600 hover:text-white transition-all smooth-transition"
+                >
+                    Voir toute la collection
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sale Banner -->
+    <section class="py-16 bg-gradient-to-r from-primary-600 to-secondary-600">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                    Soldes d'été - Jusqu'à 30% de réduction
+                </h2>
+                <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+                    Profitez de nos offres spéciales sur une sélection de chaussures. Offre valable jusqu'au 31 août.
+                </p>
+                <button 
+                    onclick="scrollToSection('products')"
+                    class="bg-white text-primary-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-all transform hover:scale-105 smooth-transition"
+                >
+                    Voir les promotions
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="relative">
+                    <img 
+                        src="https://images.unsplash.com/photo-1520006403909-838d6b92c22e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" 
+                        alt="À propos de DM Sneakers" 
+                        class="rounded-2xl shadow-lg w-full"
+                    />
+                    <div class="absolute -bottom-6 -right-6 bg-white p-6 rounded-xl shadow-lg">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mr-3">
+                                <i data-lucide="shopping-bag" class="w-6 h-6 text-primary-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-bold text-gray-900">500+</p>
+                                <p class="text-sm text-gray-500">Paires vendues</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                        Notre histoire
+                    </h2>
+                    <p class="text-gray-600 mb-4 leading-relaxed">
+                        Fondée en 2022, DM Sneakers est née de la passion pour la mode et les sneakers. 
+                        Notre mission est simple : offrir des chaussures de qualité à des prix accessibles 
+                        pour tous les amateurs de style en Afrique de l'Ouest.
+                    </p>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        Nous sélectionnons méticuleusement chaque paire dans notre collection pour vous 
+                        garantir confort, durabilité et style. Que vous cherchiez des sneakers tendance, 
+                        des chaussures de sport performantes ou des modèles classiques, nous avons ce qu'il vous faut.
+                    </p>
+                    <div class="grid md:grid-cols-2 gap-4 mb-8">
+                        <div class="bg-white p-4 rounded-lg border border-gray-200">
+                            <div class="flex items-center mb-2">
+                                <i data-lucide="truck" class="w-5 h-5 text-primary-600 mr-2"></i>
+                                <span class="font-semibold">Livraison rapide</span>
+                            </div>
+                            <p class="text-gray-600 text-sm">Livraison sous 3-5 jours au Togo, Bénin et Ghana</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg border border-gray-200">
+                            <div class="flex items-center mb-2">
+                                <i data-lucide="shield" class="w-5 h-5 text-primary-600 mr-2"></i>
+                                <span class="font-semibold">Paiement sécurisé</span>
+                            </div>
+                            <p class="text-gray-600 text-sm">Transactions 100% sécurisées</p>
+                        </div>
+                    </div>
+                    <button 
+                        onclick="scrollToSection('contact')"
+                        class="bg-primary-600 text-white px-8 py-3 rounded-lg hover:bg-primary-700 smooth-transition"
+                    >
+                        En savoir plus
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                    Ce que disent nos clients
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                    Des témoignages authentiques de clients satisfaits
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-gray-50 p-8 rounded-xl">
+                    <div class="flex mb-4">
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6 italic">"Livraison ultra rapide et chaussures encore plus belles en vrai qu'en photo. Je recommande vivement DM Sneakers !"</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-primary-600 font-semibold">K</span>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-gray-900">Koffi A.</p>
+                            <p class="text-gray-500 text-sm">Lomé, Togo</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 p-8 rounded-xl">
+                    <div class="flex mb-4">
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6 italic">"Service client exceptionnel. J'ai eu un problème avec ma taille et ils ont tout fait pour m'échanger rapidement la paire."</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-primary-600 font-semibold">A</span>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-gray-900">Amina D.</p>
+                            <p class="text-gray-500 text-sm">Cotonou, Bénin</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 p-8 rounded-xl">
+                    <div class="flex mb-4">
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6 italic">"La qualité est au rendez-vous. Mes Nike Air Max sont super confortables et tiennent bien la route. Je reviendrai !"</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-primary-600 font-semibold">E</span>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-gray-900">Emmanuel K.</p>
+                            <p class="text-gray-500 text-sm">Accra, Ghana</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-br from-gray-900 to-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                Prêt à trouver votre paire parfaite ?
+            </h2>
+            <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                Rejoignez nos milliers de clients satisfaits et découvrez pourquoi DM Sneakers est la référence en matière de chaussures tendance.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button 
+                    onclick="scrollToSection('products')"
+                    class="bg-white text-primary-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-all transform hover:scale-105 smooth-transition"
+                >
+                    Acheter maintenant
+                </button>
+                <button 
+                    onclick="scrollToSection('contact')"
+                    class="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-primary-600 transition-all smooth-transition"
+                >
+                    Nous contacter
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                    Contactez-nous
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                    Notre équipe est là pour répondre à toutes vos questions
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12">
+                <div>
+                    <div class="bg-white p-8 rounded-xl shadow-sm">
+                        <form class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Nom complet *</label>
+                                <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+                                <input type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Sujet</label>
+                                <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                                    <option>Question sur un produit</option>
+                                    <option>Suivi de commande</option>
+                                    <option>Retour/Échange</option>
+                                    <option>Autre</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Message *</label>
+                                <textarea rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent" required></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-primary-600 text-white py-3 rounded-lg font-semibold hover:bg-primary-700 smooth-transition">
+                                Envoyer le message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="bg-gray-50 p-8 rounded-xl h-full">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-6">Nos coordonnées</h3>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center mr-4">
+                                    <i data-lucide="map-pin" class="w-5 h-5 text-primary-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900">Adresse</h4>
+                                    <p class="text-gray-600">123 Avenue de la Mode, Lomé, Togo</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center mr-4">
+                                    <i data-lucide="phone" class="w-5 h-5 text-primary-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900">Téléphone</h4>
+                                    <p class="text-gray-600">+228 90 12 34 56</p>
+                                    <p class="text-gray-600">+229 90 12 34 56</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center mr-4">
+                                    <i data-lucide="mail" class="w-5 h-5 text-primary-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900">Email</h4>
+                                    <p class="text-gray-600">contact@dmsneakers.com</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center mr-4">
+                                    <i data-lucide="clock" class="w-5 h-5 text-primary-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900">Horaires d'ouverture</h4>
+                                    <p class="text-gray-600">Lundi - Vendredi : 9h - 18h</p>
+                                    <p class="text-gray-600">Samedi : 10h - 16h</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8 pt-6 border-t border-gray-200">
+                            <h4 class="font-medium text-gray-900 mb-4">Suivez-nous</h4>
+                            <div class="flex space-x-4">
+                                <a href="#" class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm hover:bg-gray-100 smooth-transition">
+                                    <i data-lucide="facebook" class="w-5 h-5 text-primary-600"></i>
+                                </a>
+                                <a href="#" class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm hover:bg-gray-100 smooth-transition">
+                                    <i data-lucide="instagram" class="w-5 h-5 text-primary-600"></i>
+                                </a>
+                                <a href="#" class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm hover:bg-gray-100 smooth-transition">
+                                    <i data-lucide="twitter" class="w-5 h-5 text-primary-600"></i>
+                                </a>
+                                <a href="#" class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm hover:bg-gray-100 smooth-transition">
+                                    <i data-lucide="whatsapp" class="w-5 h-5 text-primary-600"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-8 h-8 bg-gradient-to-r from-primary-600 to-secondary-600 rounded-lg flex items-center justify-center">
+                            <i data-lucide="shopping-bag" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <span class="text-xl font-bold">DM Sneakers</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        Votre boutique en ligne de chaussures tendance pour hommes et femmes.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white smooth-transition">
+                            <i data-lucide="facebook" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white smooth-transition">
+                            <i data-lucide="instagram" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white smooth-transition">
+                            <i data-lucide="twitter" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Boutique</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white smooth-transition">Nouveautés</a></li>
+                        <li><a href="#" class="hover:text-white smooth-transition">Hommes</a></li>
+                        <li><a href="#" class="hover:text-white smooth-transition">Femmes</a></li>
+                        <li><a href="#" class="hover:text-white smooth-transition">Sport</a></li>
+                        <li><a href="#" class="hover:text-white smooth-transition">Promotions</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Informations</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white smooth-transition">À propos</a></li>
+                        <li><a href="#" class="hover:text-white smooth-transition">Livraison</a></li>
+                        <li><a href="#" class="hover:text-white smooth-transition">Paiement</a></li>
+                        <li><a href="#" class="hover:text-white smooth-transition">Retours</a></li>
+                        <li><a href="#" class="hover:text-white smooth-transition">FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-start">
+                            <i data-lucide="map-pin" class="w-4 h-4 mr-2 mt-1 flex-shrink-0"></i>
+                            <span>123 Avenue de la Mode, Lomé, Togo</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i data-lucide="phone" class="w-4 h-4 mr-2 mt-1 flex-shrink-0"></i>
+                            <span>+228 90 12 34 56</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i data-lucide="mail" class="w-4 h-4 mr-2 mt-1 flex-shrink-0"></i>
+                            <span>contact@dmsneakers.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">&copy; 2024 DM Sneakers. Tous droits réservés.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white text-sm smooth-transition">Conditions générales</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm smooth-transition">Politique de confidentialité</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm smooth-transition">Mentions légales</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Shopping Cart Sidebar -->
+    <div id="cartSidebar" class="fixed inset-y-0 right-0 w-full md:w-96 bg-white shadow-xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out">
+        <div class="h-full flex flex-col">
+            <div class="p-6 border-b border-gray-200 flex items-center justify-between">
+                <h3 class="text-xl font-bold text-gray-900">Votre panier (3)</h3>
+                <button 
+                    onclick="closeCartSidebar()"
+                    class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                    <i data-lucide="x" class="w-6 h-6 text-gray-500"></i>
+                </button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto p-6">
+                <div class="space-y-6">
+                    <!-- Cart Item 1 -->
+                    <div class="flex">
+                        <div class="w-24 h-24 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+                            <img 
+                                src="https://images.unsplash.com/photo-1600269452121-4f2416e55c28?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1065&q=80" 
+                                alt="Nike Air Max 270" 
+                                class="w-full h-full object-cover"
+                            />
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <div class="flex justify-between">
+                                <h4 class="font-medium text-gray-900">Nike Air Max 270</h4>
+                                <span class="font-bold text-primary-600">45.000 FCFA</span>
+                            </div>
+                            <p class="text-sm text-gray-500 mb-2">Taille : 42</p>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center border border-gray-300 rounded-lg">
+                                    <button class="px-3 py-1 text-gray-600 hover:bg-gray-100">-</button>
+                                    <span class="px-3">1</span>
+                                    <button class="px-3 py-1 text-gray-600 hover:bg-gray-100">+</button>
+                                </div>
+                                <button class="text-gray-500 hover:text-red-500">
+                                    <i data-lucide="trash-2" class="w-5 h-5"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Cart Item 2 -->
+                    <div class="flex">
+                        <div class="w-24 h-24 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+                            <img 
+                                src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1025&q=80" 
+                                alt="Adidas Ultraboost" 
+                                class="w-full h-full object-cover"
+                            />
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <div class="flex justify-between">
+                                <h4 class="font-medium text-gray-900">Adidas Ultraboost</h4>
+                                <span class="font-bold text-primary-600">52.000 FCFA</span>
+                            </div>
+                            <p class="text-sm text-gray-500 mb-2">Taille : 41</p>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center border border-gray-300 rounded-lg">
+                                    <button class="px-3 py-1 text-gray-600 hover:bg-gray-100">-</button>
+                                    <span class="px-3">1</span>
+                                    <button class="px-3 py-1 text-gray-600 hover:bg-gray-100">+</button>
+                                </div>
+                                <button class="text-gray-500 hover:text-red-500">
+                                    <i data-lucide="trash-2" class="w-5 h-5"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Cart Item 3 -->
+                    <div class="flex">
+                        <div class="w-24 h-24 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+                            <img 
+                                src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80" 
+                                alt="Nike Air Force 1" 
+                                class="w-full h-full object-cover"
+                            />
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <div class="flex justify-between">
+                                <h4 class="font-medium text-gray-900">Nike Air Force 1</h4>
+                                <span class="font-bold text-primary-600">42.000 FCFA</span>
+                            </div>
+                            <p class="text-sm text-gray-500 mb-2">Taille : 40</p>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center border border-gray-300 rounded-lg">
+                                    <button class="px-3 py-1 text-gray-600 hover:bg-gray-100">-</button>
+                                    <span class="px-3">1</span>
+                                    <button class="px-3 py-1 text-gray-600 hover:bg-gray-100">+</button>
+                                </div>
+                                <button class="text-gray-500 hover:text-red-500">
+                                    <i data-lucide="trash-2" class="w-5 h-5"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-6 border-t border-gray-200">
+                <div class="flex justify-between mb-4">
+                    <span class="text-gray-600">Sous-total</span>
+                    <span class="font-bold">139.000 FCFA</span>
+                </div>
+                <div class="flex justify-between mb-6">
+                    <span class="text-gray-600">Livraison</span>
+                    <span class="font-bold">5.000 FCFA</span>
+                </div>
+                <div class="flex justify-between text-lg font-bold mb-6">
+                    <span>Total</span>
+                    <span>144.000 FCFA</span>
+                </div>
+                <button class="w-full bg-primary-600 text-white py-3 rounded-lg font-semibold hover:bg-primary-700 smooth-transition">
+                    Passer la commande
+                </button>
+                <button 
+                    onclick="closeCartSidebar()"
+                    class="w-full mt-2 border border-primary-600 text-primary-600 py-3 rounded-lg font-semibold hover:bg-primary-50 smooth-transition"
+                >
+                    Continuer mes achats
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        document.addEventListener('DOMContentLoaded', function() {
+            lucide.createIcons();
+        });
+
+        // Business dropdown toggle
+        const dropdownButton = document.getElementById('businessDropdownButton');
+        const dropdown = document.getElementById('businessDropdown');
+        const dropdownArrow = document.getElementById('dropdownArrow');
+
+        dropdownButton.addEventListener('click', function() {
+            dropdown.classList.toggle('hidden');
+            dropdownArrow.classList.toggle('rotate-180');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!dropdownButton.contains(event.target) {
+                dropdown.classList.add('hidden');
+                dropdownArrow.classList.remove('rotate-180');
+            }
+        });
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileMenuIcon = document.getElementById('mobileMenuIcon');
+            
+            if (mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.remove('hidden');
+                mobileMenuIcon.setAttribute('data-lucide', 'x');
+            } else {
+                mobileMenu.classList.add('hidden');
+                mobileMenuIcon.setAttribute('data-lucide', 'menu');
+            }
+            
+            lucide.createIcons(); // Refresh icons
+        }
+
+        // Scroll to section
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Cart sidebar functions
+        function openCartSidebar() {
+            document.getElementById('cartSidebar').classList.remove('translate-x-full');
+        }
+
+        function closeCartSidebar() {
+            document.getElementById('cartSidebar').classList.add('translate-x-full');
+        }
+
+        // Add to cart buttons
+        document.querySelectorAll('.product-card button:first-child').forEach(button => {
+            button.addEventListener('click', function() {
+                openCartSidebar();
+            });
+        });
+    </script>
+</body>
+</html>

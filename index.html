@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DM Biométrie Boost - Accompagnement biométrie Ghana vers Canada</title>
+    <meta name="description" content="Service d'accompagnement complet pour les ressortissants francophones du Togo et Bénin qui se rendent au Ghana pour leur rendez-vous de biométrie Canada. Hébergement, transport, assistance inclus.">
+    <meta name="keywords" content="biométrie Ghana, immigration Canada, Togo, Bénin, accompagnement voyage, hébergement Ghana, transport biométrie">
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        blue: {
+                            600: '#2563eb',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        /* Custom styles */
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="min-h-screen bg-white">
+        <!-- Header -->
+        <header class="bg-white shadow-sm sticky top-0 z-40">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center py-4">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                            <i data-lucide="map-pin" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <span class="text-2xl font-bold text-gray-900">DM Biométrie Boost</span>
+                    </div>
+                    
+                    <!-- Desktop Navigation -->
+                    <nav class="hidden md:flex space-x-8">
+                        <button onclick="scrollToSection('about')" class="text-gray-700 hover:text-blue-600 transition-colors">À propos</button>
+                        <button onclick="scrollToSection('services')" class="text-gray-700 hover:text-blue-600 transition-colors">Services</button>
+                        <button onclick="scrollToSection('pricing')" class="text-gray-700 hover:text-blue-600 transition-colors">Tarifs</button>
+                        <button onclick="scrollToSection('process')" class="text-gray-700 hover:text-blue-600 transition-colors">Processus</button>
+                        <button onclick="scrollToSection('testimonials')" class="text-gray-700 hover:text-blue-600 transition-colors">Témoignages</button>
+                        <button onclick="scrollToSection('contact')" class="text-gray-700 hover:text-blue-600 transition-colors">Contact</button>
+                    </nav>
+                    
+                    <!-- Desktop CTA Button -->
+                    <button 
+                        onclick="openReservationModal()"
+                        class="hidden md:block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                    >
+                        Réserver maintenant
+                    </button>
+
+                    <!-- Mobile Menu Button -->
+                    <button
+                        onclick="toggleMobileMenu()"
+                        class="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                    >
+                        <i data-lucide="menu" id="mobileMenuIcon" class="w-6 h-6"></i>
+                    </button>
+                </div>
+
+                <!-- Mobile Navigation -->
+                <div id="mobileMenu" class="hidden md:hidden py-4 border-t border-gray-200">
+                    <nav class="flex flex-col space-y-4">
+                        <button onclick="scrollToSection('about')" class="text-left text-gray-700 hover:text-blue-600 transition-colors">À propos</button>
+                        <button onclick="scrollToSection('services')" class="text-left text-gray-700 hover:text-blue-600 transition-colors">Services</button>
+                        <button onclick="scrollToSection('pricing')" class="text-left text-gray-700 hover:text-blue-600 transition-colors">Tarifs</button>
+                        <button onclick="scrollToSection('process')" class="text-left text-gray-700 hover:text-blue-600 transition-colors">Processus</button>
+                        <button onclick="scrollToSection('testimonials')" class="text-left text-gray-700 hover:text-blue-600 transition-colors">Témoignages</button>
+                        <button onclick="scrollToSection('contact')" class="text-left text-gray-700 hover:text-blue-600 transition-colors">Contact</button>
+                        <button 
+                            onclick="openReservationModal()"
+                            class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors text-center"
+                        >
+                            Réserver maintenant
+                        </button>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-br from-blue-50 to-indigo-100 py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+                        Votre voyage biométrique au Ghana
+                        <span class="text-blue-600 block">en toute sérénité</span>
+                    </h1>
+                    <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+                        Service d'accompagnement complet pour les ressortissants francophones du Togo et du Bénin. 
+                        Nous facilitons chaque étape de votre voyage vers le Canada.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button 
+                            onclick="openReservationModal()"
+                            class="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-all transform hover:scale-105 flex items-center justify-center"
+                        >
+                            Commencer maintenant
+                            <i data-lucide="arrow-right" class="w-5 h-5 ml-2"></i>
+                        </button>
+                        <button 
+                            onclick="scrollToSection('about')"
+                            class="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-600 hover:text-white transition-all"
+                        >
+                            En savoir plus
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits Section -->
+        <section class="py-16 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i data-lucide="shield" class="w-6 h-6 text-green-600"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Sécurité garantie</h3>
+                        <p class="text-gray-600">Votre sécurité est notre priorité absolue</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i data-lucide="clock" class="w-6 h-6 text-green-600"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Gain de temps</h3>
+                        <p class="text-gray-600">Évitez les recherches et les erreurs coûteuses</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i data-lucide="heart" class="w-6 h-6 text-green-600"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Service humain</h3>
+                        <p class="text-gray-600">Une équipe bienveillante à votre écoute</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Me Section -->
+        <section id="about" class="py-20 bg-gray-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                        Qui suis-je ?
+                    </h2>
+                    <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                        Votre guide de confiance pour votre voyage biométrique
+                    </p>
+                </div>
+                
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div class="text-center lg:text-left">
+                        <!-- Your Photo -->
+                        <div class="relative w-64 h-64 mx-auto lg:mx-0 mb-8">
+                            <img 
+                                src="/WhatsApp Image 2025-06-26 at 5.25.53 AM.jpeg" 
+                                alt="Djokpe Togla Durmas" 
+                                class="w-64 h-64 rounded-full object-cover border-4 border-blue-200 shadow-lg"
+                            />
+                            <div class="absolute -bottom-2 -right-2 w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center border-4 border-white">
+                                <i data-lucide="graduation-cap" class="w-8 h-8 text-white"></i>
+                            </div>
+                        </div>
+                        <div class="text-center lg:text-left">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Djokpe Togla Durmas</h3>
+                            <p class="text-blue-600 font-semibold mb-2">Fondateur de DM Biométrie Boost</p>
+                            <p class="text-gray-600 font-medium mb-4">Étudiant en Génie Mécanique • Academy City University</p>
+                            <div class="flex justify-center lg:justify-start space-x-4 mb-6">
+                                <div class="flex items-center text-gray-600">
+                                    <i data-lucide="map-pin" class="w-4 h-4 mr-2"></i>
+                                    <span>Togo • Ghana</span>
+                                </div>
+                                <div class="flex items-center text-gray-600">
+                                    <i data-lucide="award" class="w-4 h-4 mr-2"></i>
+                                    <span>2 ans d'expérience</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-white p-6 rounded-xl shadow-sm">
+                            <h4 class="text-xl font-semibold text-gray-900 mb-4">Mon histoire</h4>
+                            <p class="text-gray-600 leading-relaxed mb-4">
+                                Bonjour ! Je suis Djokpe Togla Durmas, étudiant en Génie Mécanique à Academy City University et fondateur de DM Biométrie Boost. 
+                                J'ai créé ce service après avoir vécu moi-même les défis du voyage biométrique au Ghana en 2022.
+                            </p>
+                            <p class="text-gray-600 leading-relaxed mb-4">
+                                Lors de mon propre rendez-vous de biométrie, j'ai réalisé combien ce processus pouvait être stressant et compliqué, 
+                                surtout quand on ne connaît pas le pays. Entre mes études et cette expérience personnelle, 
+                                j'ai décidé de créer ce service pour aider mes compatriotes du Togo et du Bénin.
+                            </p>
+                            <p class="text-gray-600 leading-relaxed">
+                                Depuis 2 ans, je combine mes études avec cette passion d'accompagner des familles et des individus dans cette démarche cruciale pour leur avenir au Canada. 
+                                Ma mission est simple : transformer votre voyage biométrique en une expérience sereine et réussie.
+                            </p>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <div class="flex items-center mb-2">
+                                    <i data-lucide="users" class="w-5 h-5 text-blue-600 mr-2"></i>
+                                    <span class="font-semibold text-blue-900">100+ clients</span>
+                                </div>
+                                <p class="text-blue-700 text-sm">accompagnés avec succès</p>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <div class="flex items-center mb-2">
+                                    <i data-lucide="star" class="w-5 h-5 text-green-600 mr-2"></i>
+                                    <span class="font-semibold text-green-900">100% satisfaction</span>
+                                </div>
+                                <p class="text-green-700 text-sm">de nos clients</p>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-yellow-50 p-6 rounded-xl border-l-4 border-yellow-400">
+                            <h5 class="font-semibold text-yellow-900 mb-2">Mon engagement envers vous</h5>
+                            <p class="text-yellow-800 text-sm">
+                                "En tant qu'étudiant et entrepreneur, je comprends l'importance de chaque dollar et de chaque moment. 
+                                Je m'engage personnellement à ce que votre voyage se déroule parfaitement. 
+                                Votre réussite est ma priorité, et je serai là à chaque étape pour vous accompagner."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                        Nos services complets
+                    </h2>
+                    <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                        Un accompagnement personnalisé à chaque étape de votre voyage
+                    </p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="text-blue-600 mb-4">
+                            <i data-lucide="map-pin" class="w-8 h-8"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Accueil personnalisé</h3>
+                        <p class="text-gray-600 leading-relaxed">Accueil dès votre arrivée à la gare ou à la frontière. Nous vous attendons pour vous guider dès les premiers pas.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="text-blue-600 mb-4">
+                            <i data-lucide="home" class="w-8 h-8"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Hébergement confortable</h3>
+                        <p class="text-gray-600 leading-relaxed">Logement sûr et confortable inclus dans notre forfait. Reposez-vous en toute tranquillité.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="text-blue-600 mb-4">
+                            <i data-lucide="utensils" class="w-8 h-8"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Restauration complète</h3>
+                        <p class="text-gray-600 leading-relaxed">Petit déjeuner et repas fournis. Découvrez la cuisine locale dans un cadre convivial.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="text-blue-600 mb-4">
+                            <i data-lucide="car" class="w-8 h-8"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Transport inclus</h3>
+                        <p class="text-gray-600 leading-relaxed">Transport vers et depuis le centre de biométrie (Ambassade). Déplacements sécurisés et ponctuels.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="text-blue-600 mb-4">
+                            <i data-lucide="file-text" class="w-8 h-8"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Assistance documentaire</h3>
+                        <p class="text-gray-600 leading-relaxed">Aide pour vos documents, formulaires, prise de rendez-vous et informations essentielles.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="text-blue-600 mb-4">
+                            <i data-lucide="users" class="w-8 h-8"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Accompagnement complet</h3>
+                        <p class="text-gray-600 leading-relaxed">Suivi personnalisé du début jusqu'à votre retour dans votre pays d'origine.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section id="pricing" class="py-20 bg-gray-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                        Nos forfaits transparents
+                    </h2>
+                    <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                        Choisissez le forfait qui correspond à vos besoins et votre budget
+                    </p>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-white rounded-xl shadow-lg p-8 relative">
+                        <div class="text-center mb-8">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Forfait Essentiel</h3>
+                            <div class="flex items-center justify-center mb-2">
+                                <span class="text-4xl font-bold text-blue-600">$150</span>
+                                <span class="text-gray-500 ml-2">USD</span>
+                            </div>
+                            <p class="text-gray-600">2 jours</p>
+                        </div>
+                        <ul class="space-y-4 mb-8">
+                            <li class="flex items-center">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-3 flex-shrink-0"></i>
+                                <span class="text-gray-700">Accueil à la frontière</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-3 flex-shrink-0"></i>
+                                <span class="text-gray-700">Hébergement 1 nuit</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-3 flex-shrink-0"></i>
+                                <span class="text-gray-700">Transport centre biométrie</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-3 flex-shrink-0"></i>
+                                <span class="text-gray-700">Assistance de base</span>
+                            </li>
+                        </ul>
+                        <button 
+                            onclick="openReservationModal()"
+                            class="w-full py-3 rounded-lg font-semibold transition-colors border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
+                        >
+                            Choisir ce forfait
+                        </button>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-lg p-8 relative ring-2 ring-blue-500 transform scale-105">
+                        <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                            <span class="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
+                                Plus populaire
+                            </span>
+                        </div>
+                        <div class="text-center mb-8">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Forfait Confort</h3>
+                            <div class="flex items-center justify-center mb-2">
+                                <span class="text-4xl font-bold text-blue-600">$250</span>
+                                <span class="text-gray-500 ml-2">USD</span>
+                            </div>
+                            <p class="text-gray-600">3 jours</p>
+                        </div>
+                        <ul class="space-y-4 mb-8">
+                            <li class="flex items-center">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-3 flex-shrink-0"></i>
+                                <span class="text-gray-700">Accueil personnalisé</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-3 flex-shrink-0"></i>
+                                <span class="text-gray-700">Hébergement 2 nuits</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-3 flex-shrink-0"></i>
+                                <span class="text-gray-700">Tous les repas inclus</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-3 flex-shrink-0"></i>
+                                <span class="text-gray-700">Transport aller-retour</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-3 flex-shrink-0"></i>
+                                <span class="text-gray-700">Assistance documentaire</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-3 flex-shrink-0"></i>
+                                <span class="text-gray-700">Support WhatsApp 24h/7j</span>
+                            </li>
+                        </ul>
+                        <button 
+                            onclick="openReservationModal()"
+                            class="w-full py-3 rounded-lg font-semibold transition-colors bg-blue-600 text-white hover:bg-blue-700"
+                        >
+                            Choisir ce forfait
+                        </button>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-lg p-8 relative">
+                        <div class="text-center mb-8">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Forfait Premium</h3>
+                            <div class="flex items-center justify-center mb-2">
+                                <span class="text-4xl font-bold text-blue-600">$350</span>
+                                <span class="text-gray-500 ml-2">USD</span>
+                            </div>
+                            <p class="text-gray-600">4 jours</p>
+                        </div>
+                        <ul class="space-y-4 mb-8">
+                            <li class="flex items-center">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-3 flex-shrink-0"></i>
+                                <span class="text-gray-700">Service VIP complet</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-3 flex-shrink-0"></i>
+                                <span class="text-gray-700">Hébergement premium 3 nuits</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-3 flex-shrink-0"></i>
+                                <span class="text-gray-700">Restauration gastronomique</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-3 flex-shrink-0"></i>
+                                <span class="text-gray-700">Transport privé</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-3 flex-shrink-0"></i>
+                                <span class="text-gray-700">Assistance personnalisée</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-3 flex-shrink-0"></i>
+                                <span class="text-gray-700">Visite guidée d'Accra</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-3 flex-shrink-0"></i>
+                                <span class="text-gray-700">Support prioritaire</span>
+                            </li>
+                        </ul>
+                        <button 
+                            onclick="openReservationModal()"
+                            class="w-full py-3 rounded-lg font-semibold transition-colors border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
+                        >
+                            Choisir ce forfait
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-12">
+                    <p class="text-gray-600 mb-4">Besoin d'un forfait sur mesure ?</p>
+                    <button 
+                        onclick="openQuoteModal()"
+                        class="bg-gray-100 text-gray-800 px-6 py-3 rounded-lg hover:bg-gray-200 transition-colors"
+                    >
+                        Demander un devis personnalisé
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Process Section -->
+        <section id="process" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                        Comment ça marche ?
+                    </h2>
+                    <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                        Un processus simple et transparent pour votre tranquillité d'esprit
+                    </p>
+                </div>
+                
+                <div class="relative">
+                    <div class="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-blue-200 transform -translate-y-1/2"></div>
+                    <div class="grid md:grid-cols-5 gap-8">
+                        <div class="text-center relative">
+                            <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-xl font-bold relative z-10">
+                                1
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Réservation</h3>
+                            <p class="text-gray-600 text-sm">Contactez-nous pour réserver votre forfait personnalisé</p>
+                        </div>
+                        <div class="text-center relative">
+                            <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-xl font-bold relative z-10">
+                                2
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Accueil</h3>
+                            <p class="text-gray-600 text-sm">Nous vous accueillons dès votre arrivée au Ghana</p>
+                        </div>
+                        <div class="text-center relative">
+                            <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-xl font-bold relative z-10">
+                                3
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Hébergement</h3>
+                            <p class="text-gray-600 text-sm">Installation dans votre logement confortable</p>
+                        </div>
+                        <div class="text-center relative">
+                            <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-xl font-bold relative z-10">
+                                4
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Biométrie</h3>
+                            <p class="text-gray-600 text-sm">Accompagnement au centre de biométrie</p>
+                        </div>
+                        <div class="text-center relative">
+                            <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-xl font-bold relative z-10">
+                                5
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Retour</h3>
+                            <p class="text-gray-600 text-sm">Assistance pour votre retour en toute sérénité</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="py-20 bg-gradient-to-br from-blue-50 to-indigo-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                        Ce que disent nos clients
+                    </h2>
+                    <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                        Des témoignages authentiques de voyageurs satisfaits
+                    </p>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-white p-8 rounded-xl shadow-sm">
+                        <div class="flex mb-4">
+                            <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        </div>
+                        <p class="text-gray-600 mb-6 italic">"Service exceptionnel ! Grâce à DM Biométrie Boost, mon voyage au Ghana s'est parfaitement déroulé. Je recommande vivement !"</p>
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                                <span class="text-blue-600 font-semibold">M</span>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Marie K.</p>
+                                <p class="text-gray-500 text-sm">Togo</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-sm">
+                        <div class="flex mb-4">
+                            <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        </div>
+                        <p class="text-gray-600 mb-6 italic">"Équipe très professionnelle et attentionnée. Ils ont géré tous les détails, je n'ai eu aucun stress."</p>
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                                <span class="text-blue-600 font-semibold">J</span>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Jean-Paul A.</p>
+                                <p class="text-gray-500 text-sm">Bénin</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-sm">
+                        <div class="flex mb-4">
+                            <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        </div>
+                        <p class="text-gray-600 mb-6 italic">"Je suis très satisfaite du service. Tout était organisé parfaitement, de l'arrivée au départ."</p>
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                                <span class="text-blue-600 font-semibold">F</span>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Fatou S.</p>
+                                <p class="text-gray-500 text-sm">Togo</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trust Section -->
+        <section class="py-16 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Pourquoi nous faire confiance ?</h2>
+                </div>
+                <div class="grid md:grid-cols-4 gap-8">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i data-lucide="award" class="w-8 h-8 text-blue-600"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">2 ans d'expérience</h3>
+                        <p class="text-gray-600 text-sm">Expertise reconnue dans l'accompagnement biométrique</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i data-lucide="users" class="w-8 h-8 text-green-600"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">100+ clients satisfaits</h3>
+                        <p class="text-gray-600 text-sm">Voyageurs accompagnés avec succès</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i data-lucide="globe" class="w-8 h-8 text-purple-600"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Présence régionale</h3>
+                        <p class="text-gray-600 text-sm">Équipes au Togo, Bénin et Ghana</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i data-lucide="shield" class="w-8 h-8 text-yellow-600"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Garantie satisfaction</h3>
+                        <p class="text-gray-600 text-sm">Remboursement si service non conforme</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="py-20 bg-blue-600">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                    Prêt pour votre voyage au Ghana ?
+                </h2>
+                <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+                    Évitez le stress, les erreurs et les mauvaises surprises. 
+                    On s'occupe de tout, vous êtes entre de bonnes mains.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button 
+                        onclick="openReservationModal()"
+                        class="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-all transform hover:scale-105"
+                    >
+                        Réserver maintenant
+                    </button>
+                    <button 
+                        onclick="openQuoteModal()"
+                        class="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-600 transition-all"
+                    >
+                        Demander un devis
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 bg-gray-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                        Contactez-nous
+                    </h2>
+                    <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                        Notre équipe est là pour répondre à toutes vos questions
+                    </p>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-8 mb-16">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i data-lucide="phone" class="w-8 h-8 text-blue-600"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Téléphone</h3>
+                        <p class="text-gray-600">+233 243278318</p>
+                        <p class="text-gray-600">+229 90031672</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i data-lucide="message-circle" class="w-8 h-8 text-blue-600"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">WhatsApp</h3>
+                        <p class="text-gray-600">+233 243278318</p>
+                        <p class="text-gray-600">Disponible 24h/7j</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i data-lucide="mail" class="w-8 h-8 text-blue-600"></i>
+                        </div>
+                        
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Email</h3>
+                        <a href="mailto:dmbiometrieboost@gmail.com" class="text-gray-600 hover:text-gray-800 hover:underline">dmbiometrieboost@gmail.com</a>
+                        <p class="text-gray-600">Réponse sous 24h</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-8 rounded-xl shadow-sm max-w-2xl mx-auto">
+                    <form class="space-y-6" id="contactForm" onsubmit="submitContactForm(event)">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Nom complet</label>
+                                <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Téléphone</label>
+                                <input type="tel" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                            <input type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Date souhaitée de voyage</label>
+                            <input type="date" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Message</label>
+                            <textarea rows={4} class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Décrivez vos besoins spécifiques..." required></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                            Envoyer ma demande
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-gray-900 text-white py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid md:grid-cols-4 gap-8">
+                    <div>
+                        <div class="flex items-center space-x-2 mb-4">
+                            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                                <i data-lucide="map-pin" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <span class="text-xl font-bold">DM Biométrie Boost</span>
+                        </div>
+                        <p class="text-gray-400">
+                            Votre partenaire de confiance pour votre voyage biométrique au Ghana.
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-semibold mb-4">Services</h4>
+                        <ul class="space-y-2 text-gray-400">
+                            <li>Accueil & Transport</li>
+                            <li>Hébergement</li>
+                            <li>Assistance documentaire</li>
+                            <li>Accompagnement biométrie</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-semibold mb-4">Pays desservis</h4>
+                        <ul class="space-y-2 text-gray-400">
+                            <li>🇹🇬 Togo</li>
+                            <li>🇧🇯 Bénin</li>
+                            <li>🇬🇭 Ghana (destination)</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-semibold mb-4">Contact</h4>
+                        <ul class="space-y-2 text-gray-400">
+                            <li>📞 +233 243278318</li>
+                            <li>📞 +229 90031672</li>
+                            <li>📱 WhatsApp 24h/7j</li>
+                            <li>✉ dmbiometrieboost@gmail.com</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+                    <p>&copy; 2024 DM Biométrie Boost. Tous droits réservés.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Reservation Modal -->
+    <div id="reservationModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b border-gray-200 flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900">Réserver votre accompagnement</h2>
+                    <p class="text-gray-600 mt-1">Remplissez ce formulaire pour commencer votre réservation</p>
+                </div>
+                <button
+                    onclick="closeReservationModal()"
+                    class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                    <i data-lucide="x" class="w-6 h-6 text-gray-500"></i>
+                </button>
+            </div>
+
+            <div class="p-6">
+                <form class="space-y-6" id="reservationForm" onsubmit="submitReservationForm(event)">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                <i data-lucide="user" class="w-4 h-4 inline mr-1"></i>
+                                Nom complet *
+                            </label>
+                            <input
+                                type="text"
+                                name="fullName"
+                                required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                placeholder="Votre nom complet"
+                            >
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                <i data-lucide="phone" class="w-4 h-4 inline mr-1"></i>
+                                Téléphone *
+                            </label>
+                            <input
+                                type="tel"
+                                name="phone"
+                                required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                placeholder="+228 XX XXX XXXX"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                <i data-lucide="mail" class="w-4 h-4 inline mr-1"></i>
+                                Email *
+                            </label>
+                            <input
+                                type="email"
+                                name="email"
+                                required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                placeholder="votre@email.com"
+                            >
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Pays de résidence *
+                            </label>
+                            <select
+                                name="country"
+                                required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            >
+                                <option value="">Sélectionnez votre pays</option>
+                                <option value="togo">🇹🇬 Togo</option>
+                                <option value="benin">🇧🇯 Bénin</option>
+                                <option value="autre">Autre</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                <i data-lucide="calendar" class="w-4 h-4 inline mr-1"></i>
+                                Date souhaitée de voyage
+                            </label>
+                            <input
+                                type="date"
+                                name="travelDate"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            >
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Date de rendez-vous biométrie
+                            </label>
+                            <input
+                                type="date"
+                                name="appointmentDate"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            >
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i data-lucide="message-circle" class="w-4 h-4 inline mr-1"></i>
+                            Message (optionnel)
+                        </label>
+                        <textarea
+                            name="message"
+                            rows="4"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            placeholder="Décrivez vos besoins spécifiques, questions particulières, ou toute information importante..."
+                        ></textarea>
+                    </div>
+
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <h4 class="font-medium text-blue-900 mb-2">Ce qui est inclus dans votre forfait :</h4>
+                        <ul class="text-blue-800 text-sm space-y-1">
+                            <li>✓ Accueil personnalisé à votre arrivée</li>
+                            <li>✓ Hébergement confortable</li>
+                            <li>✓ Tous les repas (petit déjeuner + repas)</li>
+                            <li>✓ Transport vers le centre de biométrie</li>
+                            <li>✓ Assistance documentaire complète</li>
+                            <li>✓ Accompagnement jusqu'à votre retour</li>
+                        </ul>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <button
+                            type="button"
+                            onclick="closeReservationModal()"
+                            class="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                        >
+                            Annuler
+                        </button>
+                        <button
+                            type="submit"
+                            class="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center"
+                        >
+                            Envoyer ma demande
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quote Modal -->
+    <div id="quoteModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b border-gray-200 flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900">Demander un devis personnalisé</h2>
+                    <p class="text-gray-600 mt-1">Obtenez une estimation précise selon vos besoins</p>
+                </div>
+                <button
+                    onclick="closeQuoteModal()"
+                    class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                    <i data-lucide="x" class="w-6 h-6 text-gray-500"></i>
+                </button>
+            </div>
+
+            <div class="p-6">
+                <form class="space-y-6" id="quoteForm" onsubmit="submitQuoteForm(event)">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nom complet *</label>
+                            <input
+                                type="text"
+                                name="fullName"
+                                required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            >
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+                            <input
+                                type="email"
+                                name="email"
+                                required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Téléphone *</label>
+                            <input
+                                type="tel"
+                                name="phone"
+                                required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            >
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                <i data-lucide="users" class="w-4 h-4 inline mr-1"></i>
+                                Nombre de personnes
+                            </label>
+                            <select
+                                name="numberOfPeople"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            >
+                                <option value="1">1 personne</option>
+                                <option value="2">2 personnes</option>
+                                <option value="3">3 personnes</option>
+                                <option value="4">4 personnes</option>
+                                <option value="5">5 personnes</option>
+                                <option value="6">6 personnes</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                <i data-lucide="calendar" class="w-4 h-4 inline mr-1"></i>
+                                Durée du séjour
+                            </label>
+                            <select
+                                name="duration"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            >
+                                <option value="1">1 jour</option>
+                                <option value="2">2 jours</option>
+                                <option value="3">3 jours</option>
+                                <option value="4">4 jours</option>
+                                <option value="5">5 jours</option>
+                                <option value="6">6 jours</option>
+                                <option value="7">7 jours</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-4">Services souhaités *</label>
+                        <div class="grid md:grid-cols-2 gap-3">
+                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    name="transport"
+                                    value="50"
+                                    class="mr-3 text-blue-600 focus:ring-blue-500"
+                                >
+                                <div class="flex-1">
+                                    <span class="text-sm font-medium text-gray-900">Transport depuis la frontière</span>
+                                    <span class="text-sm text-blue-600 ml-2">$50</span>
+                                </div>
+                            </label>
+                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    name="accommodation"
+                                    value="30"
+                                    class="mr-3 text-blue-600 focus:ring-blue-500"
+                                >
+                                <div class="flex-1">
+                                    <span class="text-sm font-medium text-gray-900">Hébergement (par nuit)</span>
+                                    <span class="text-sm text-blue-600 ml-2">$30</span>
+                                </div>
+                            </label>
+                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    name="meals"
+                                    value="25"
+                                    class="mr-3 text-blue-600 focus:ring-blue-500"
+                                >
+                                <div class="flex-1">
+                                    <span class="text-sm font-medium text-gray-900">Restauration complète (par jour)</span>
+                                    <span class="text-sm text-blue-600 ml-2">$25</span>
+                                </div>
+                            </label>
+                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    name="biometry-transport"
+                                    value="20"
+                                    class="mr-3 text-blue-600 focus:ring-blue-500"
+                                >
+                                <div class="flex-1">
+                                    <span class="text-sm font-medium text-gray-900">Transport vers centre biométrie</span>
+                                    <span class="text-sm text-blue-600 ml-2">$20</span>
+                                </div>
+                            </label>
+                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    name="document-assistance"
+                                    value="40"
+                                    class="mr-3 text-blue-600 focus:ring-blue-500"
+                                >
+                                <div class="flex-1">
+                                    <span class="text-sm font-medium text-gray-900">Assistance documentaire</span>
+                                    <span class="text-sm text-blue-600 ml-2">$40</span>
+                                </div>
+                            </label>
+                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    name="full-support"
+                                    value="60"
+                                    class="mr-3 text-blue-600 focus:ring-blue-500"
+                                >
+                                <div class="flex-1">
+                                    <span class="text-sm font-medium text-gray-900">Accompagnement complet</span>
+                                    <span class="text-sm text-blue-600 ml-2">$60</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="estimateContainer" class="bg-blue-50 p-4 rounded-lg hidden">
+                        <div class="flex items-center justify-between">
+                            <span class="text-blue-900 font-medium">Estimation préliminaire :</span>
+                            <span id="estimateValue" class="text-2xl font-bold text-blue-600">$0</span>
+                        </div>
+                        <p class="text-blue-700 text-sm mt-1">
+                            *Prix indicatif - Le devis final peut varier selon vos besoins spécifiques
+                        </p>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                <i data-lucide="map-pin" class="w-4 h-4 inline mr-1"></i>
+                                Pays de départ
+                            </label>
+                            <select
+                                name="country"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            >
+                                <option value="">Sélectionnez</option>
+                                <option value="togo">🇹🇬 Togo</option>
+                                <option value="benin">🇧🇯 Bénin</option>
+                                <option value="autre">Autre</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Date souhaitée</label>
+                            <input
+                                type="date"
+                                name="travelDate"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            >
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Besoins spécifiques</label>
+                        <textarea
+                            name="message"
+                            rows="3"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            placeholder="Décrivez vos besoins particuliers, contraintes, ou questions..."
+                        ></textarea>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <button
+                            type="button"
+                            onclick="closeQuoteModal()"
+                            class="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                        >
+                            Annuler
+                        </button>
+                        <button
+                            type="submit"
+                            class="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+                        >
+                            Demander mon devis
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-xl max-w-md w-full p-6 text-center">
+            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i data-lucide="check-circle" class="w-8 h-8 text-green-600"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">Demande envoyée avec succès !</h3>
+            <p class="text-gray-600 mb-4">
+                Merci pour votre demande. Notre équipe vous contactera dans les plus brefs délais.
+            </p>
+            <button
+                onclick="closeSuccessModal()"
+                class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+            >
+                Fermer
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        document.addEventListener('DOMContentLoaded', function() {
+            lucide.createIcons();
+            
+            // Calculate estimate when checkboxes change
+            document.querySelectorAll('#quoteForm input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', calculateEstimate);
+            });
+            
+            // Calculate estimate when number of people or duration changes
+            document.querySelector('#quoteForm select[name="numberOfPeople"]').addEventListener('change', calculateEstimate);
+            document.querySelector('#quoteForm select[name="duration"]').addEventListener('change', calculateEstimate);
+        });
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileMenuIcon = document.getElementById('mobileMenuIcon');
+            
+            if (mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.remove('hidden');
+                mobileMenuIcon.setAttribute('data-lucide', 'x');
+            } else {
+                mobileMenu.classList.add('hidden');
+                mobileMenuIcon.setAttribute('data-lucide', 'menu');
+            }
+            
+            lucide.createIcons(); // Refresh icons
+        }
+
+        // Scroll to section
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Modal functions
+        function openReservationModal() {
+            document.getElementById('reservationModal').classList.remove('hidden');
+        }
+
+        function closeReservationModal() {
+            document.getElementById('reservationModal').classList.add('hidden');
+        }
+
+        function openQuoteModal() {
+            document.getElementById('quoteModal').classList.remove('hidden');
+        }
+
+        function closeQuoteModal() {
+            document.getElementById('quoteModal').classList.add('hidden');
+        }
+
+        function openSuccessModal() {
+            document.getElementById('successModal').classList.remove('hidden');
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').classList.add('hidden');
+        }
+
+        // Calculate estimate for quote
+        function calculateEstimate() {
+            const form = document.getElementById('quoteForm');
+            const numberOfPeople = parseInt(form.querySelector('select[name="numberOfPeople"]').value);
+            const duration = parseInt(form.querySelector('select[name="duration"]').value);
+            
+            let total = 0;
+            const checkboxes = form.querySelectorAll('input[type="checkbox"]:checked');
+            
+            checkboxes.forEach(checkbox => {
+                const price = parseInt(checkbox.value);
+                if (checkbox.name === 'accommodation' || checkbox.name === 'meals') {
+                    total += price * numberOfPeople * duration;
+                } else {
+                    total += price * numberOfPeople;
+                }
+            });
+            
+            const estimateContainer = document.getElementById('estimateContainer');
+            const estimateValue = document.getElementById('estimateValue');
+            
+            if (total > 0) {
+                estimateContainer.classList.remove('hidden');
+                estimateValue.textContent = `$${total}`;
+            } else {
+                estimateContainer.classList.add('hidden');
+            }
+        }
+
+        // Form submissions
+        function submitContactForm(e) {
+            e.preventDefault();
+            // Here you would normally send the form data to your server
+            alert('Formulaire de contact envoyé !');
+            e.target.reset();
+        }
+
+        function submitReservationForm(e) {
+            e.preventDefault();
+            // Here you would normally send the form data to your server
+            closeReservationModal();
+            openSuccessModal();
+            e.target.reset();
+        }
+
+        function submitQuoteForm(e) {
+            e.preventDefault();
+            // Here you would normally send the form data to your server
+            closeQuoteModal();
+            openSuccessModal();
+            e.target.reset();
+            document.getElementById('estimateContainer').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
