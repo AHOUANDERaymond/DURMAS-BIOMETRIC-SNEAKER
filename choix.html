@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animation de Cercles</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        .container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 90%;
+            max-width: 1000px;
+            position: relative;
+        }
+        
+        .circle {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+            text-decoration: none;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+            overflow: hidden;
+        }
+        
+        .circle:hover {
+            transform: scale(1.05);
+        }
+        
+        .circle-1 {
+            background: linear-gradient(45deg, #ff00cc, #3333ff);
+            animation: pulseColor1 8s infinite alternate, fadeInOut 4s infinite ease-in-out;
+        }
+        
+        .circle-2 {
+            background: linear-gradient(45deg, #00ffcc, #cc00ff);
+            animation: pulseColor2 8s infinite alternate, fadeInOut 4s infinite ease-in-out 2s;
+        }
+        
+        .circle::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+            transform: scale(0);
+            opacity: 0;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+        
+        .circle:hover::before {
+            transform: scale(1);
+            opacity: 0.4;
+        }
+        
+        @keyframes pulseColor1 {
+            0% { background: linear-gradient(45deg, #ff00cc, #3333ff); }
+            25% { background: linear-gradient(45deg, #ff0066, #6600ff); }
+            50% { background: linear-gradient(45deg, #ff0099, #9900ff); }
+            75% { background: linear-gradient(45deg, #cc00ff, #0066ff); }
+            100% { background: linear-gradient(45deg, #ff00cc, #3333ff); }
+        }
+        
+        @keyframes pulseColor2 {
+            0% { background: linear-gradient(45deg, #00ffcc, #cc00ff); }
+            25% { background: linear-gradient(45deg, #00ff99, #ff00cc); }
+            50% { background: linear-gradient(45deg, #00ffff, #ff00ff); }
+            75% { background: linear-gradient(45deg, #00ccff, #cc00cc); }
+            100% { background: linear-gradient(45deg, #00ffcc, #cc00ff); }
+        }
+        
+        @keyframes fadeInOut {
+            0% { opacity: 0.7; transform: scale(0.95); }
+            50% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0.7; transform: scale(0.95); }
+        }
+        
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.8);
+            animation: float 15s linear infinite;
+            transition: all 2s ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 0.8;
+            }
+            50% {
+                transform: translate(var(--tx), var(--ty)) rotate(180deg);
+                opacity: 0.2;
+            }
+        }
+        
+        /* Animation de formation du DM */
+        @keyframes formDM {
+            0%, 40%, 100% {
+                transform: translate(var(--tx), var(--ty));
+                opacity: var(--base-opacity);
+            }
+            20% {
+                transform: translate(var(--dm-x), var(--dm-y));
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="circle circle-1">DM BIOMETRIC</a>
+        <a href="main.html" class="circle circle-2">DM SNEAKER</a>
+        <div class="particles" id="particles"></div>
+    </div>
+
+    <script>
+        // Configuration des particules
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = 150;
+        let particles = [];
+        let isDMFormed = false;
+        
+        // Positions pour former les lettres DM
+        const dmPositions = [
+            // Lettre D
+            {x: 45, y: 45}, {x: 45, y: 50}, {x: 45, y: 55}, {x: 45, y: 60},
+            {x: 48, y: 45}, {x: 48, y: 60}, {x: 51, y: 47}, {x: 51, y: 58},
+            {x: 54, y: 50}, {x: 54, y: 55},
+            
+            // Lettre M
+            {x: 60, y: 45}, {x: 60, y: 50}, {x: 60, y: 55}, {x: 60, y: 60},
+            {x: 63, y: 47}, {x: 66, y: 50}, {x: 63, y: 53},
+            {x: 69, y: 45}, {x: 69, y: 50}, {x: 69, y: 55}, {x: 69, y: 60}
+        ];
+        
+        // Création des particules
+        function createParticles() {
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Taille aléatoire entre 2px et 6px
+                const size = Math.random() * 4 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Position initiale aléatoire
+                const startX = Math.random() * 100;
+                const startY = Math.random() * 100;
+                particle.style.left = `${startX}%`;
+                particle.style.top = `${startY}%`;
+                
+                // Valeurs pour l'animation de flottement
+                const tx = (Math.random() - 0.5) * 20;
+                const ty = (Math.random() - 0.5) * 20;
+                particle.style.setProperty('--tx', `${tx}px`);
+                particle.style.setProperty('--ty', `${ty}px`);
+                
+                // Opacité de base
+                const baseOpacity = Math.random() * 0.5 + 0.3;
+                particle.style.setProperty('--base-opacity', baseOpacity);
+                
+                // Stocker la position de départ
+                particle.dataset.startX = startX;
+                particle.dataset.startY = startY;
+                
+                particlesContainer.appendChild(particle);
+                particles.push(particle);
+            }
+        }
+        
+        // Fonction pour former le DM
+        function formDM() {
+            particles.forEach((particle, index) => {
+                // Si on a assez de particules pour former le DM
+                if (index < dmPositions.length) {
+                    const dmPos = dmPositions[index];
+                    particle.style.setProperty('--dm-x', `${dmPos.x - parseFloat(particle.dataset.startX)}%`);
+                    particle.style.setProperty('--dm-y', `${dmPos.y - parseFloat(particle.dataset.startY)}%`);
+                } else {
+                    // Les particules supplémentaires se rassemblent au centre
+                    particle.style.setProperty('--dm-x', `${50 - parseFloat(particle.dataset.startX)}%`);
+                    particle.style.setProperty('--dm-y', `${50 - parseFloat(particle.dataset.startY)}%`);
+                }
+                
+                // Appliquer l'animation
+                particle.style.animation = 'formDM 10s infinite';
+            });
+            
+            isDMFormed = true;
+        }
+        
+        // Initialisation
+        createParticles();
+        formDM();
+        
+        // Changer l'animation toutes les 10 secondes
+        setInterval(() => {
+            if (isDMFormed) {
+                // Retour à l'animation de flottement
+                particles.forEach(particle => {
+                    particle.style.animation = 'float 15s linear infinite';
+                });
+                isDMFormed = false;
+                
+                // Après 5 secondes, reformer le DM
+                setTimeout(formDM, 5000);
+            }
+        }, 10000);
+    </script>
+</body>
+</html>
