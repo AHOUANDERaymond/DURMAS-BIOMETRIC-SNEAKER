@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlopasshubAccra - Convertisseur texte/audio</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            min-height: 100vh;
+            transition: background-image 1s ease;
+            background-size: cover;
+            background-position: center;
+            background-image: url('https://source.unsplash.com/random/1920x1080/?vibrant,abstract,1');
+            animation: changeBackground 25s infinite;
+        }
+
+        @keyframes changeBackground {
+            0% { background-image: url('https://source.unsplash.com/random/1920x1080/?vibrant,neon,1'); }
+            25% { background-image: url('https://source.unsplash.com/random/1920x1080/?vibrant,gradient,1'); }
+            50% { background-image: url('https://source.unsplash.com/random/1920x1080/?vibrant,colorful,1'); }
+            75% { background-image: url('https://source.unsplash.com/random/1920x1080/?vibrant,light,1'); }
+            100% { background-image: url('https://source.unsplash.com/random/1920x1080/?vibrant,neon,2'); }
+        }
+
+        /* Menu Hamburger */
+        .hamburger {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.7);
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 40px;
+            width: 40px;
+        }
+
+        .hamburger span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: white;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: translateY(11px) rotate(45deg);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: translateY(-11px) rotate(-45deg);
+        }
+
+        /* Layout principal */
+        .app-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar h1 {
+            font-size: 1.5rem;
+            margin-bottom: 0.3rem;
+            font-weight: 700;
+            color: #ff4d6d;
+            text-align: center;
+        }
+
+        .sidebar h2 {
+            font-size: 0.9rem;
+            font-weight: 400;
+            margin-bottom: 2rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+        }
+
+        .sidebar-nav {
+            width: 100%;
+        }
+
+        .sidebar-item {
+            padding: 0.8rem 1rem;
+            margin: 0.5rem 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .sidebar-item:hover {
+            background-color: rgba(255, 77, 109, 0.2);
+            transform: translateX(5px);
+        }
+
+        .sidebar-item.active {
+            background-color: rgba(255, 77, 109, 0.4);
+            font-weight: 600;
+        }
+
+        .sidebar-item i {
+            font-size: 1.1rem;
+        }
+
+        /* Contenu principal */
+        .main-content {
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            overflow-y: auto;
+        }
+
+        /* Onglets */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 0.8rem 1.5rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        .tab:hover {
+            background-color: rgba(255, 77, 109, 0.5);
+            transform: translateY(-3px);
+        }
+
+        .tab.active {
+            background-color: #ff4d6d;
+            font-weight: 600;
+        }
+
+        .tab::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .tab:hover::after {
+            opacity: 1;
+        }
+
+        /* Cartes */
+        .card {
+            background-color: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-bottom: 2rem;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #ffcc00;
+        }
+
+        .card p {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Boîte de lien */
+        .link-box {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .link {
+            font-size: 1rem;
+            color: white;
+            text-decoration: none;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex-grow: 1;
+            text-align: left;
+            min-width: 200px;
+        }
+
+        /* Boutons */
+        .action-btn {
+            background: linear-gradient(45deg, #ff4d6d, #ff8e53);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+            margin-right: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 77, 109, 0.6);
+        }
+
+        .action-btn.secondary {
+            background: linear-gradient(45deg, #6d4dff, #53b0ff);
+            box-shadow: 0 5px 15px rgba(109, 77, 255, 0.4);
+        }
+
+        .action-btn.secondary:hover {
+            box-shadow: 0 8px 20px rgba(109, 77, 255, 0.6);
+        }
+
+        .action-btn::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .action-btn:hover::after {
+            opacity: 1;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+
+        /* Options de partage */
+        .share-options {
+            display: none;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .share-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0.8rem;
+            border-radius: 10px;
+            min-width: 80px;
+        }
+
+        .share-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .share-option i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .share-option span {
+            font-size: 0.8rem;
+        }
+
+        /* Zone de dépôt de fichier */
+        .file-upload {
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .file-upload i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #ffcc00;
+        }
+
+        .file-upload p {
+            margin-bottom: 0.5rem;
+        }
+
+        .file-upload small {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.8rem;
+        }
+
+        /* Effets visuels */
+        .glow {
+            text-shadow: 0 0 10px rgba(255, 77, 109, 0.7);
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 77, 109, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 77, 109, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 77, 109, 0); }
+        }
+
+        /* Historique */
+        .history-container {
+            display: none;
+        }
+
+        .history-item {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .history-item:hover {
+            background-color: rgba(255, 77, 109, 0.2);
+            transform: translateX(5px);
+        }
+
+        .history-item-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .history-item-title {
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .history-item-content {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .history-item-footer {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .history-item-type {
+            padding: 0.2rem 0.5rem;
+            border-radius: 50px;
+            background-color: rgba(255, 77, 109, 0.3);
+            color: white;
+            font-size: 0.7rem;
+        }
+
+        .history-item-type.audio {
+            background-color: rgba(109, 77, 255, 0.3);
+        }
+
+        .no-history {
+            text-align: center;
+            padding: 2rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Vue détaillée */
+        .history-detail {
+            display: none;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .history-detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .history-detail-title {
+            font-size: 1.3rem;
+            color: white;
+            font-weight: 600;
+        }
+
+        .history-detail-meta {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .history-detail-content {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100vh;
+                width: 250px;
+                z-index: 999;
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                padding: 1.5rem;
+                margin-left: 0;
+                padding-top: 80px;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .link-box {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .link {
+                min-width: 0;
+                margin-bottom: 1rem;
+            }
+
+            .btn-group {
+                justify-content: center;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <button class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <div class="app-container">
+        <div class="sidebar">
+            <h1 class="glow">GlopasshubAccra</h1>
+            <h2>by Glopasshub</h2>
+            
+            <div class="sidebar-nav">
+                <div class="sidebar-item active" data-section="home">
+                    <i class="fas fa-home"></i>
+                    <span>Accueil</span>
+                </div>
+                <div class="sidebar-item" data-section="converter">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Convertisseur</span>
+                </div>
+                <div class="sidebar-item" data-section="history">
+                    <i class="fas fa-history"></i>
+                    <span>Historique</span>
+                </div>
+                <div class="sidebar-item" data-section="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Paramètres</span>
+                </div>
+                <div class="sidebar-item" data-section="profile">
+                    <i class="fas fa-user"></i>
+                    <span>Profil</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- Section Accueil/Convertisseur -->
+            <div id="converter-section">
+                <div class="tabs">
+                    <div class="tab active" data-tooltip="Convertir du texte en audio" data-tab="text-to-audio">Texte vers Audio</div>
+                    <div class="tab" data-tooltip="Convertir de l'audio en texte" data-tab="audio-to-text">Audio vers Texte</div>
+                </div>
+                
+                <!-- Carte pour Texte vers Audio -->
+                <div id="text-to-audio-card" class="card">
+                    <h3>Conversion Texte vers Audio</h3>
+                    <p>Collez votre texte ci-dessous pour le convertir en fichier audio de haute qualité.</p>
+                    
+                    <textarea id="text-to-convert" style="width: 100%; height: 150px; padding: 1rem; border-radius: 10px; background-color: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); margin-bottom: 1.5rem;" placeholder="Saisissez votre texte ici..."></textarea>
+                    
+                    <div class="btn-group">
+                        <button id="convert-text-btn" class="action-btn pulse" data-tooltip="Convertir le texte en audio">
+                            <i class="fas fa-play"></i> Convertir
+                        </button>
+                        <button id="download-audio-btn" class="action-btn secondary" data-tooltip="Télécharger le fichier audio" disabled>
+                            <i class="fas fa-download"></i> Télécharger
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Carte pour Audio vers Texte (cachée par défaut) -->
+                <div id="audio-to-text-card" class="card" style="display: none;">
+                    <h3>Conversion Audio vers Texte</h3>
+                    <p>Téléchargez votre fichier audio pour le convertir en texte.</p>
+                    
+                    <div class="file-upload" id="file-upload-area">
+                        <i class="fas fa-microphone-alt"></i>
+                        <p>Glissez-déposez votre fichier audio ici</p>
+                        <small>ou cliquez pour sélectionner un fichier</small>
+                        <small>Formats supportés: MP3, WAV, AAC (max 25MB)</small>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button id="convert-audio-btn" class="action-btn pulse" data-tooltip="Convertir l'audio en texte" disabled>
+                            <i class="fas fa-play"></i> Convertir
+                        </button>
+                        <button id="clear-audio-btn" class="action-btn secondary" data-tooltip="Effacer le fichier">
+                            <i class="fas fa-times"></i> Effacer
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="card" id="result-card">
+                    <h3 id="result-title">Votre dernière conversion</h3>
+                    <p id="result-description">Voici le lien de téléchargement de votre fichier audio généré :</p>
+                    
+                    <div class="link-box">
+                        <a href="#" class="link" id="result-link">Aucun fichier généré récemment</a>
+                        <button id="copy-link-btn" class="action-btn" data-tooltip="Copier le lien dans le presse-papier" disabled>
+                            <i class="fas fa-copy"></i> Copier
+                        </button>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button id="share-btn" class="action-btn" data-tooltip="Partager ce fichier" disabled>
+                            <i class="fas fa-share-alt"></i> Partager
+                        </button>
+                        <button id="delete-result-btn" class="action-btn secondary" data-tooltip="Supprimer ce fichier" disabled>
+                            <i class="fas fa-trash"></i> Supprimer
+                        </button>
+                    </div>
+
+                    <div id="share-options" class="share-options">
+                        <div class="share-option" data-network="whatsapp">
+                            <i class="fab fa-whatsapp" style="color: #25D366;"></i>
+                            <span>WhatsApp</span>
+                        </div>
+                        <div class="share-option" data-network="facebook">
+                            <i class="fab fa-facebook" style="color: #1877F2;"></i>
+                            <span>Facebook</span>
+                        </div>
+                        <div class="share-option" data-network="twitter">
+                            <i class="fab fa-twitter" style="color: #1DA1F2;"></i>
+                            <span>Twitter</span>
+                        </div>
+                        <div class="share-option" data-network="instagram">
+                            <i class="fab fa-instagram" style="color: #E4405F;"></i>
+                            <span>Instagram</span>
+                        </div>
+                        <div class="share-option" data-network="tiktok">
+                            <i class="fab fa-tiktok" style="color: #000000;"></i>
+                            <span>TikTok</span>
+                        </div>
+                        <div class="share-option" data-network="telegram">
+                            <i class="fab fa-telegram" style="color: #0088CC;"></i>
+                            <span>Telegram</span>
+                        </div>
+                        <div class="share-option" data-network="email">
+                            <i class="fas fa-envelope" style="color: #EA4335;"></i>
+                            <span>Email</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Historique -->
+            <div id="history-section" class="history-container">
+                <div class="card">
+                    <h3>Historique des Conversions</h3>
+                    <p>Retrouvez ici toutes vos conversions précédentes.</p>
+                    
+                    <div id="history-list">
+                        <!-- Les éléments d'historique seront ajoutés dynamiquement ici -->
+                    </div>
+                </div>
+
+                <div id="history-detail" class="history-detail">
+                    <div class="history-detail-header">
+                        <div>
+                            <div class="history-detail-title" id="detail-title"></div>
+                            <div class="history-detail-meta" id="detail-meta"></div>
+                        </div>
+                        <button id="back-to-history" class="action-btn secondary">
+                            <i class="fas fa-arrow-left"></i> Retour
+                        </button>
+                    </div>
+                    
+                    <div class="history-detail-content" id="detail-content"></div>
+                    
+                    <div class="btn-group">
+                        <button id="download-history-btn" class="action-btn">
+                            <i class="fas fa-download"></i> Télécharger
+                        </button>
+                        <button id="delete-history-btn" class="action-btn secondary">
+                            <i class="fas fa-trash"></i> Supprimer
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Paramètres -->
+            <div id="settings-section" class="history-container">
+                <div class="card">
+                    <h3>Paramètres</h3>
+                    <p>Configurez vos préférences d'application.</p>
+                    
+                    <div class="link-box">
+                        <span>Langue de synthèse vocale</span>
+                        <select style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 0.5rem; border-radius: 5px;">
+                            <option>Français</option>
+                            <option>Anglais</option>
+                            <option>Espagnol</option>
+                        </select>
+                    </div>
+                    
+                    <div class="link-box">
+                        <span>Qualité audio</span>
+                        <select style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 0.5rem; border-radius: 5px;">
+                            <option>Haute (128 kbps)</option>
+                            <option>Moyenne (64 kbps)</option>
+                            <option>Basse (32 kbps)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button class="action-btn">
+                            <i class="fas fa-save"></i> Enregistrer
+                        </button>
+                        <button class="action-btn secondary">
+                            <i class="fas fa-undo"></i> Réinitialiser
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Profil -->
+            <div id="profile-section" class="history-container">
+                <div class="card">
+                    <h3>Profil Utilisateur</h3>
+                    <p>Gérez vos informations personnelles.</p>
+                    <!-- Dans la section profil, ajoutez ceci -->
+
+                    
+                    <div class="file-upload" style="width: 150px; height: 150px; border-radius: 50%; margin: 0 auto 1.5rem;">
+                        <i class="fas fa-user" style="font-size: 4rem;"></i>
+                    </div>
+                    
+                    <div class="link-box">
+                        <span>Nom d'utilisateur</span>
+                        <input type="text" value="Glopasshub" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 0.5rem; border-radius: 5px; width: 200px;">
+                    </div>
+                    
+                    <div class="link-box">
+                        <span>Email</span>
+                        <input type="email" value="glopasshub@gmail.com" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 0.5rem; border-radius: 5px; width: 200px;">
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button class="action-btn">
+                            <i class="fas fa-save"></i> Enregistrer
+                        </button>
+                        <button class="action-btn secondary">
+                            <i class="fas fa-sign-out-alt"></i> Déconnexion
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Gestion du menu hamburger
+        const hamburger = document.querySelector('.hamburger');
+        const sidebar = document.querySelector('.sidebar');
+
+        hamburger.addEventListener('click', function() {
+            this.classList.toggle('active');
+            sidebar.classList.toggle('active');
+        });
+
+        // Gestion des sections
+        const sections = {
+            'home': document.getElementById('converter-section'),
+            'converter': document.getElementById('converter-section'),
+            'history': document.getElementById('history-section'),
+            'settings': document.getElementById('settings-section'),
+            'profile': document.getElementById('profile-section')
+        };
+
+        const sidebarItems = document.querySelectorAll('.sidebar-item');
+
+        // Fonction pour afficher une section spécifique
+        function showSection(sectionId) {
+            // Masquer toutes les sections
+            Object.values(sections).forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Afficher la section demandée
+            if (sections[sectionId]) {
+                sections[sectionId].style.display = 'block';
+            }
+            
+            // Gérer l'affichage spécial pour l'historique
+            if (sectionId === 'history') {
+                loadHistory();
+            }
+        }
+
+        // Gestion des clics sur les éléments du menu
+    sidebarItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const sectionId = this.getAttribute('data-section');
+            
+            // Mettre à jour l'élément actif du menu
+            sidebarItems.forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Afficher la section correspondante
+            showSection(sectionId);
+            
+            // Si on clique sur "Convertisseur", basculer entre les modes de conversion
+            if (sectionId === 'converter') {
+                // Vérifier quel onglet est actif actuellement
+                const textToAudioActive = textToAudioTab.classList.contains('active');
+                
+                if (textToAudioActive) {
+                    switchToAudioToText();
+                } else {
+                    switchToTextToAudio();
+                }
+            }
+            
+            // Fermer le sidebar sur mobile après sélection
+            if (window.innerWidth <= 768) {
+                hamburger.classList.remove('active');
+                sidebar.classList.remove('active');
+            }
+        });
+    });
+
+        // Initialisation - afficher la section d'accueil par défaut
+        showSection('home');
+
+        // Animation pour copier le lien
+        document.getElementById('copy-link-btn').addEventListener('click', function() {
+            const link = document.getElementById('result-link').textContent;
+            if (link && link !== "Aucun fichier généré récemment") {
+                navigator.clipboard.writeText(link);
+                
+                const originalText = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-check"></i> Copié!';
+                
+                setTimeout(() => {
+                    this.innerHTML = originalText;
+                }, 2000);
+            }
+        });
+
+        // Gestion des onglets
+        const textToAudioTab = document.querySelector('.tab[data-tab="text-to-audio"]');
+        const audioToTextTab = document.querySelector('.tab[data-tab="audio-to-text"]');
+        const textToAudioCard = document.getElementById('text-to-audio-card');
+        const audioToTextCard = document.getElementById('audio-to-text-card');
+        const resultTitle = document.getElementById('result-title');
+        const resultDescription = document.getElementById('result-description');
+
+        function switchToTextToAudio() {
+            // Activer l'onglet Texte vers Audio
+            textToAudioTab.classList.add('active');
+            audioToTextTab.classList.remove('active');
+            
+            // Afficher la carte correspondante
+            textToAudioCard.style.display = 'block';
+            audioToTextCard.style.display = 'none';
+            
+            // Mettre à jour le titre et la description des résultats
+            resultTitle.textContent = "Votre dernière conversion audio";
+            resultDescription.textContent = "Voici le lien de téléchargement de votre fichier audio généré :";
+        }
+
+        function switchToAudioToText() {
+            // Activer l'onglet Audio vers Texte
+            audioToTextTab.classList.add('active');
+            textToAudioTab.classList.remove('active');
+            
+            // Afficher la carte correspondante
+            audioToTextCard.style.display = 'block';
+            textToAudioCard.style.display = 'none';
+            
+            // Mettre à jour le titre et la description des résultats
+            resultTitle.textContent = "Votre dernière transcription";
+            resultDescription.textContent = "Voici le lien de téléchargement de votre fichier texte généré :";
+        }
+
+        textToAudioTab.addEventListener('click', switchToTextToAudio);
+        audioToTextTab.addEventListener('click', switchToAudioToText);
+
+        // Gestion du partage
+        const shareBtn = document.getElementById('share-btn');
+        const shareOptions = document.getElementById('share-options');
+
+        shareBtn.addEventListener('click', function() {
+            shareOptions.style.display = shareOptions.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        // Gestion des options de partage
+        document.querySelectorAll('.share-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const network = this.getAttribute('data-network');
+                const link = document.getElementById('result-link').textContent;
+                
+                if (link && link !== "Aucun fichier généré récemment") {
+                    const message = "Regardez ce fichier que j'ai créé avec GlopasshubAccra: ";
+                    
+                    let shareUrl = '';
+                    
+                    switch(network) {
+                        case 'whatsapp':
+                            shareUrl = `https://wa.me/?text=${encodeURIComponent(message + link)}`;
+                            break;
+                        case 'facebook':
+                            shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(link)}`;
+                            break;
+                        case 'twitter':
+                            shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}&url=${encodeURIComponent(link)}`;
+                            break;
+                        case 'instagram':
+                            alert("Copiez le lien et partagez-le dans l'application Instagram");
+                            return;
+                        case 'tiktok':
+                            alert("Copiez le lien et partagez-le dans l'application TikTok");
+                            return;
+                        case 'telegram':
+                            shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(message)}`;
+                            break;
+                        case 'email':
+                            shareUrl = `mailto:?subject=Partage d'un fichier&body=${encodeURIComponent(message + link)}`;
+                            break;
+                    }
+                    
+                    if (shareUrl) {
+                        window.open(shareUrl, '_blank', 'width=600,height=400');
+                    }
+                } else {
+                    alert("Aucun fichier à partager. Veuillez d'abord effectuer une conversion.");
+                }
+            });
+        });
+
+        // Fermer les options de partage quand on clique ailleurs
+        document.addEventListener('click', function(e) {
+            if (!shareOptions.contains(e.target) && e.target !== shareBtn) {
+                shareOptions.style.display = 'none';
+            }
+        });
+
+        // Gestion du dépôt de fichier
+        const fileUploadArea = document.getElementById('file-upload-area');
+        const convertAudioBtn = document.getElementById('convert-audio-btn');
+        let audioFile = null;
+        
+        fileUploadArea.addEventListener('click', function() {
+            // Créer un input file invisible
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'audio/*';
+            
+            fileInput.onchange = e => { 
+                const file = e.target.files[0];
+                if (file) {
+                    audioFile = file;
+                    
+                    // Afficher le nom du fichier sélectionné
+                    this.innerHTML = `
+                        <i class="fas fa-file-audio"></i>
+                        <p>${file.name}</p>
+                        <small>${(file.size / (1024 * 1024)).toFixed(2)} MB</small>
+                    `;
+                    
+                    // Activer le bouton de conversion
+                    convertAudioBtn.disabled = false;
+                }
+            };
+            
+            fileInput.click();
+        });
+
+        // Gestion du drag and drop
+        fileUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUploadArea.style.borderColor = 'rgba(255, 255, 255, 0.7)';
+            fileUploadArea.style.background = 'rgba(255, 255, 255, 0.1)';
+        });
+
+        fileUploadArea.addEventListener('dragleave', () => {
+            fileUploadArea.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+            fileUploadArea.style.background = 'transparent';
+        });
+
+        fileUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUploadArea.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+            fileUploadArea.style.background = 'transparent';
+            
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('audio/')) {
+                audioFile = file;
+                fileUploadArea.innerHTML = `
+                    <i class="fas fa-file-audio"></i>
+                    <p>${file.name}</p>
+                    <small>${(file.size / (1024 * 1024)).toFixed(2)} MB</small>
+                `;
+                convertAudioBtn.disabled = false;
+            } else {
+                alert('Veuillez sélectionner un fichier audio valide');
+            }
+        });
+
+        // Gestion du bouton Effacer
+        document.getElementById('clear-audio-btn').addEventListener('click', function() {
+            audioFile = null;
+            fileUploadArea.innerHTML = `
+                <i class="fas fa-microphone-alt"></i>
+                <p>Glissez-déposez votre fichier audio ici</p>
+                <small>ou cliquez pour sélectionner un fichier</small>
+                <small>Formats supportés: MP3, WAV, AAC (max 25MB)</small>
+            `;
+            convertAudioBtn.disabled = true;
+        });
+
+        // Gestion de l'historique dans localStorage
+        function getHistory() {
+            const history = localStorage.getItem('conversionHistory');
+            return history ? JSON.parse(history) : [];
+        }
+
+        function saveToHistory(conversion) {
+            const history = getHistory();
+            history.unshift(conversion); // Ajouter au début du tableau
+            localStorage.setItem('conversionHistory', JSON.stringify(history));
+        }
+
+        function loadHistory() {
+            const history = getHistory();
+            const historyList = document.getElementById('history-list');
+            
+            historyList.innerHTML = '';
+            
+            if (history.length === 0) {
+                historyList.innerHTML = '<div class="no-history">Aucune conversion dans l\'historique</div>';
+                return;
+            }
+            
+            history.forEach((item, index) => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                historyItem.setAttribute('data-index', index);
+                
+                const date = new Date(item.timestamp);
+                const formattedDate = date.toLocaleDateString('fr-FR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                historyItem.innerHTML = `
+                    <div class="history-item-header">
+                        <span>${formattedDate}</span>
+                        <span class="history-item-type ${item.type === 'audio' ? 'audio' : ''}">${item.type === 'audio' ? 'Audio' : 'Texte'}</span>
+                    </div>
+                    <div class="history-item-title">${item.title}</div>
+                    <div class="history-item-content">${item.contentPreview}</div>
+                    <div class="history-item-footer">
+                        <span>${item.size}</span>
+                        <span>${item.duration || ''}</span>
+                    </div>
+                `;
+                
+                historyItem.addEventListener('click', () => showHistoryDetail(index));
+                historyList.appendChild(historyItem);
+            });
+        }
+
+        function showHistoryDetail(index) {
+            const history = getHistory();
+            const item = history[index];
+            
+            if (!item) return;
+            
+            document.getElementById('history-list').style.display = 'none';
+            document.getElementById('history-detail').style.display = 'block';
+            
+            const date = new Date(item.timestamp);
+            const formattedDate = date.toLocaleDateString('fr-FR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            document.getElementById('detail-title').textContent = item.title;
+            document.getElementById('detail-meta').textContent = `${formattedDate} • ${item.size} • ${item.type === 'audio' ? 'Fichier audio' : 'Fichier texte'}`;
+            document.getElementById('detail-content').textContent = item.content;
+            
+            // Stocker l'index de l'élément actuel pour les opérations de suppression/téléchargement
+            document.getElementById('history-detail').setAttribute('data-current-index', index);
+        }
+
+        document.getElementById('back-to-history').addEventListener('click', function() {
+            document.getElementById('history-list').style.display = 'block';
+            document.getElementById('history-detail').style.display = 'none';
+        });
+
+        document.getElementById('delete-history-btn').addEventListener('click', function() {
+            const index = document.getElementById('history-detail').getAttribute('data-current-index');
+            if (index !== null) {
+                const history = getHistory();
+                history.splice(index, 1);
+                localStorage.setItem('conversionHistory', JSON.stringify(history));
+                
+                // Recharger l'historique
+                loadHistory();
+                document.getElementById('history-list').style.display = 'block';
+                document.getElementById('history-detail').style.display = 'none';
+            }
+        });
+
+        document.getElementById('download-history-btn').addEventListener('click', function() {
+            const index = document.getElementById('history-detail').getAttribute('data-current-index');
+            if (index !== null) {
+                const history = getHistory();
+                const item = history[index];
+                
+                if (item) {
+                    let blob, filename;
+                    
+                    if (item.type === 'audio') {
+                        // Simuler un fichier audio (en réalité ce serait le fichier original)
+                        blob = new Blob([item.content], { type: 'audio/mp3' });
+                        filename = `audio-${item.timestamp}.mp3`;
+                    } else {
+                        // Fichier texte
+                        blob = new Blob([item.content], { type: 'text/plain' });
+                        filename = `transcription-${item.timestamp}.txt`;
+                    }
+                    
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }
+            }
+        });
+
+        // Simulation de conversion texte vers audio
+        document.getElementById('convert-text-btn').addEventListener('click', function() {
+            const text = document.getElementById('text-to-convert').value.trim();
+            
+            if (text) {
+                // Simuler un temps de conversion
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Conversion...';
+                this.disabled = true;
+                
+                setTimeout(() => {
+                    // Générer un résultat simulé
+                    const timestamp = Date.now();
+                    const filename = `audio-${timestamp}.mp3`;
+                    const filesize = `${(Math.random() * 2 + 1).toFixed(1)} MB`;
+                    const duration = `${Math.floor(Math.random() * 3 + 1)}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`;
+                    const fakeLink = `https://glopasshub.accra/audio/${filename}`;
+                    
+                    // Mettre à jour l'interface
+                    document.getElementById('result-link').textContent = fakeLink;
+                    document.getElementById('result-link').href = fakeLink;
+                    document.getElementById('download-audio-btn').disabled = false;
+                    document.getElementById('copy-link-btn').disabled = false;
+                    document.getElementById('share-btn').disabled = false;
+                    document.getElementById('delete-result-btn').disabled = false;
+                    
+                    // Réinitialiser le bouton
+                    this.innerHTML = '<i class="fas fa-play"></i> Convertir';
+                    this.disabled = false;
+                    
+                    // Enregistrer dans l'historique
+                    const title = `Conversion audio - ${new Date(timestamp).toLocaleDateString()}`;
+                    const conversion = {
+                        type: 'audio',
+                        title: title,
+                        content: text,
+                        contentPreview: text.length > 50 ? text.substring(0, 50) + '...' : text,
+                        size: filesize,
+                        duration: duration,
+                        timestamp: timestamp,
+                        link: fakeLink
+                    };
+                    
+                    saveToHistory(conversion);
+                    
+                    // Afficher une notification
+                    alert('Conversion terminée avec succès !');
+                }, 2000);
+            } else {
+                alert('Veuillez entrer du texte à convertir');
+            }
+        });
+
+        // Simulation de conversion audio vers texte
+        document.getElementById('convert-audio-btn').addEventListener('click', function() {
+            if (audioFile) {
+                // Simuler un temps de conversion
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Conversion...';
+                this.disabled = true;
+                
+                setTimeout(() => {
+                    // Générer un résultat simulé (transcription aléatoire)
+                    const timestamp = Date.now();
+                    const filename = `transcription-${timestamp}.txt`;
+                    const filesize = `${(audioFile.size / (1024 * 1024)).toFixed(1)} MB`;
+                    const fakeText = "Ceci est une transcription simulée du fichier audio. En réalité, cette application utilise une API de reconnaissance vocale pour convertir l'audio en texte. Voici un exemple de texte transcrit à partir d'un fichier audio.";
+                    const fakeLink = `https://glopasshub.accra/text/${filename}`;
+                    
+                    // Mettre à jour l'interface
+                    document.getElementById('result-link').textContent = fakeLink;
+                    document.getElementById('result-link').href = fakeLink;
+                    document.getElementById('result-title').textContent = "Votre dernière transcription";
+                    document.getElementById('result-description').textContent = "Voici le lien de téléchargement de votre fichier texte généré :";
+                    document.getElementById('download-audio-btn').disabled = false;
+                    document.getElementById('copy-link-btn').disabled = false;
+                    document.getElementById('share-btn').disabled = false;
+                    document.getElementById('delete-result-btn').disabled = false;
+                    
+                    // Réinitialiser le bouton
+                    this.innerHTML = '<i class="fas fa-play"></i> Convertir';
+                    this.disabled = false;
+                    
+                    // Enregistrer dans l'historique
+                    const title = `Transcription audio - ${new Date(timestamp).toLocaleDateString()}`;
+                    const conversion = {
+                        type: 'text',
+                        title: title,
+                        content: fakeText,
+                        contentPreview: fakeText.length > 50 ? fakeText.substring(0, 50) + '...' : fakeText,
+                        size: filesize,
+                        timestamp: timestamp,
+                        link: fakeLink
+                    };
+                    
+                    saveToHistory(conversion);
+                    
+                    // Afficher une notification
+                    alert('Transcription terminée avec succès !');
+                }, 3000);
+            } else {
+                alert('Veuillez sélectionner un fichier audio');
+            }
+        });
+
+        // Téléchargement du résultat
+        document.getElementById('download-audio-btn').addEventListener('click', function() {
+            const link = document.getElementById('result-link').textContent;
+            if (link && link !== "Aucun fichier généré récemment") {
+                // Simuler un téléchargement
+                const a = document.createElement('a');
+                a.href = link;
+                a.download = link.split('/').pop();
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+        });
+
+        // Suppression du résultat
+        document.getElementById('delete-result-btn').addEventListener('click', function() {
+            document.getElementById('result-link').textContent = "Aucun fichier généré récemment";
+            document.getElementById('result-link').href = "#";
+            document.getElementById('download-audio-btn').disabled = true;
+            document.getElementById('copy-link-btn').disabled = true;
+            document.getElementById('share-btn').disabled = true;
+            document.getElementById('delete-result-btn').disabled = true;
+        });
+    </script>
+</body>
+</html>
