@@ -540,6 +540,48 @@
                 justify-content: center;
             }
         }
+
+        /* Animation de chargement */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #ff4d6d;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 1rem;
+            border-radius: 5px;
+            z-index: 1000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -549,6 +591,8 @@
         <span></span>
         <span></span>
     </button>
+
+    <div class="notification" id="notification"></div>
 
     <div class="app-container">
         <div class="sidebar">
@@ -572,10 +616,6 @@
                     <i class="fas fa-cog"></i>
                     <span>Paramètres</span>
                 </div>
-                <!-- <div class="sidebar-item" data-section="profile">
-                    <i class="fas fa-user"></i>
-                    <span>Profil</span>
-                </div> -->
             </div>
         </div>
 
@@ -593,6 +633,11 @@
                     <p>Collez votre texte ci-dessous pour le convertir en fichier audio de haute qualité.</p>
                     
                     <textarea id="text-to-convert" style="width: 100%; height: 150px; padding: 1rem; border-radius: 10px; background-color: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); margin-bottom: 1.5rem;" placeholder="Saisissez votre texte ici..."></textarea>
+                    
+                    <div class="loading" id="text-conversion-loading">
+                        <div class="loading-spinner"></div>
+                        <p>Conversion en cours...</p>
+                    </div>
                     
                     <div class="btn-group">
                         <button id="convert-text-btn" class="action-btn pulse" data-tooltip="Convertir le texte en audio">
@@ -616,9 +661,14 @@
                         <small>Formats supportés: MP3, WAV, AAC (max 25MB)</small>
                     </div>
                     
+                    <div class="loading" id="audio-conversion-loading">
+                        <div class="loading-spinner"></div>
+                        <p>Transcription en cours...</p>
+                    </div>
+                    
                     <div class="btn-group">
-                        <button id="convert-audio-btn" class="action-btn pulse" data-tooltip="Convertir l'audio en texte" disabled>
-                            <i class="fas fa-play"></i> Convertir
+                        <button id="convert-audio-btn" class="action-btn pulse" data-tooltip="Convertir l'audio en texte">
+                            <i class="fas fa-microphone"></i> Démarrer la transcription
                         </button>
                         <button id="clear-audio-btn" class="action-btn secondary" data-tooltip="Effacer le fichier">
                             <i class="fas fa-times"></i> Effacer
@@ -645,7 +695,6 @@
                             <i class="fas fa-trash"></i> Supprimer
                         </button>
                     </div>
-
 
                     <div id="share-options" class="share-options">
                         <div class="share-option" data-network="whatsapp">
@@ -680,13 +729,10 @@
                 </div>
             </div>
 
-
-
             <!-- Section Historique -->
             <div id="history-section" class="history-container">
                 <div class="card">
                     <h3>Historique des Conversions</h3>
-
                     <p>Retrouvez ici toutes vos conversions précédentes.</p>
                     
                     <div id="history-list">
@@ -758,8 +804,6 @@
                 <div class="card">
                     <h3>Profil Utilisateur</h3>
                     <p>Gérez vos informations personnelles.</p>
-                    <!-- Dans la section profil, ajoutez ceci -->
-
                     
                     <div class="file-upload" style="width: 150px; height: 150px; border-radius: 50%; margin: 0 auto 1.5rem;">
                         <i class="fas fa-user" style="font-size: 4rem;"></i>
@@ -798,6 +842,17 @@
             sidebar.classList.toggle('active');
         });
 
+        // Fonction de notification
+        function showNotification(message, duration = 3000) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, duration);
+        }
+
         // Gestion des sections
         const sections = {
             'home': document.getElementById('converter-section'),
@@ -828,36 +883,36 @@
         }
 
         // Gestion des clics sur les éléments du menu
-    sidebarItems.forEach(item => {
-        item.addEventListener('click', function() {
-            const sectionId = this.getAttribute('data-section');
-            
-            // Mettre à jour l'élément actif du menu
-            sidebarItems.forEach(i => i.classList.remove('active'));
-            this.classList.add('active');
-            
-            // Afficher la section correspondante
-            showSection(sectionId);
-            
-            // Si on clique sur "Convertisseur", basculer entre les modes de conversion
-            if (sectionId === 'converter') {
-                // Vérifier quel onglet est actif actuellement
-                const textToAudioActive = textToAudioTab.classList.contains('active');
+        sidebarItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const sectionId = this.getAttribute('data-section');
                 
-                if (textToAudioActive) {
-                    switchToAudioToText();
-                } else {
-                    switchToTextToAudio();
+                // Mettre à jour l'élément actif du menu
+                sidebarItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Afficher la section correspondante
+                showSection(sectionId);
+                
+                // Si on clique sur "Convertisseur", basculer entre les modes de conversion
+                if (sectionId === 'converter') {
+                    // Vérifier quel onglet est actif actuellement
+                    const textToAudioActive = textToAudioTab.classList.contains('active');
+                    
+                    if (textToAudioActive) {
+                        switchToTextToAudio();
+                    } else {
+                        switchToAudioToText();
+                    }
                 }
-            }
-            
-            // Fermer le sidebar sur mobile après sélection
-            if (window.innerWidth <= 768) {
-                hamburger.classList.remove('active');
-                sidebar.classList.remove('active');
-            }
+                
+                // Fermer le sidebar sur mobile après sélection
+                if (window.innerWidth <= 768) {
+                    hamburger.classList.remove('active');
+                    sidebar.classList.remove('active');
+                }
+            });
         });
-    });
 
         // Initialisation - afficher la section d'accueil par défaut
         showSection('home');
@@ -867,13 +922,7 @@
             const link = document.getElementById('result-link').textContent;
             if (link && link !== "Aucun fichier généré récemment") {
                 navigator.clipboard.writeText(link);
-                
-                const originalText = this.innerHTML;
-                this.innerHTML = '<i class="fas fa-check"></i> Copié!';
-                
-                setTimeout(() => {
-                    this.innerHTML = originalText;
-                }, 2000);
+                showNotification('Lien copié dans le presse-papier');
             }
         });
 
@@ -946,10 +995,10 @@
                             shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}&url=${encodeURIComponent(link)}`;
                             break;
                         case 'instagram':
-                            alert("Copiez le lien et partagez-le dans l'application Instagram");
+                            showNotification("Copiez le lien et partagez-le dans l'application Instagram");
                             return;
                         case 'tiktok':
-                            alert("Copiez le lien et partagez-le dans l'application TikTok");
+                            showNotification("Copiez le lien et partagez-le dans l'application TikTok");
                             return;
                         case 'telegram':
                             shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(message)}`;
@@ -963,7 +1012,7 @@
                         window.open(shareUrl, '_blank', 'width=600,height=400');
                     }
                 } else {
-                    alert("Aucun fichier à partager. Veuillez d'abord effectuer une conversion.");
+                    showNotification("Aucun fichier à partager. Veuillez d'abord effectuer une conversion.");
                 }
             });
         });
@@ -989,6 +1038,18 @@
             fileInput.onchange = e => { 
                 const file = e.target.files[0];
                 if (file) {
+                    // Vérifier la taille du fichier (max 25MB)
+                    if (file.size > 25 * 1024 * 1024) {
+                        showNotification('Le fichier est trop volumineux (max 25MB)');
+                        return;
+                    }
+                    
+                    // Vérifier le type de fichier
+                    if (!file.type.match('audio.*')) {
+                        showNotification('Veuillez sélectionner un fichier audio valide');
+                        return;
+                    }
+                    
                     audioFile = file;
                     
                     // Afficher le nom du fichier sélectionné
@@ -997,9 +1058,6 @@
                         <p>${file.name}</p>
                         <small>${(file.size / (1024 * 1024)).toFixed(2)} MB</small>
                     `;
-                    
-                    // Activer le bouton de conversion
-                    convertAudioBtn.disabled = false;
                 }
             };
             
@@ -1024,16 +1082,25 @@
             fileUploadArea.style.background = 'transparent';
             
             const file = e.dataTransfer.files[0];
-            if (file && file.type.startsWith('audio/')) {
+            if (file) {
+                // Vérifier la taille du fichier (max 25MB)
+                if (file.size > 25 * 1024 * 1024) {
+                    showNotification('Le fichier est trop volumineux (max 25MB)');
+                    return;
+                }
+                
+                // Vérifier le type de fichier
+                if (!file.type.match('audio.*')) {
+                    showNotification('Veuillez sélectionner un fichier audio valide');
+                    return;
+                }
+                
                 audioFile = file;
                 fileUploadArea.innerHTML = `
                     <i class="fas fa-file-audio"></i>
                     <p>${file.name}</p>
                     <small>${(file.size / (1024 * 1024)).toFixed(2)} MB</small>
                 `;
-                convertAudioBtn.disabled = false;
-            } else {
-                alert('Veuillez sélectionner un fichier audio valide');
             }
         });
 
@@ -1046,7 +1113,6 @@
                 <small>ou cliquez pour sélectionner un fichier</small>
                 <small>Formats supportés: MP3, WAV, AAC (max 25MB)</small>
             `;
-            convertAudioBtn.disabled = true;
         });
 
         // Gestion de l'historique dans localStorage
@@ -1146,6 +1212,7 @@
                 loadHistory();
                 document.getElementById('history-list').style.display = 'block';
                 document.getElementById('history-detail').style.display = 'none';
+                showNotification('Conversion supprimée de l\'historique');
             }
         });
 
@@ -1176,26 +1243,33 @@
                     a.click();
                     document.body.removeChild(a);
                     URL.revokeObjectURL(url);
+                    showNotification('Téléchargement commencé');
                 }
             }
         });
 
-        // Simulation de conversion texte vers audio
+        // Simulation de conversion texte vers audio avec WeTransfer
         document.getElementById('convert-text-btn').addEventListener('click', function() {
             const text = document.getElementById('text-to-convert').value.trim();
             
             if (text) {
-                // Simuler un temps de conversion
-                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Conversion...';
+                // Afficher le chargement
+                document.getElementById('text-conversion-loading').style.display = 'block';
                 this.disabled = true;
                 
+                // Simuler un temps de conversion (2-4 secondes)
+                const conversionTime = 2000 + Math.random() * 2000;
+                
                 setTimeout(() => {
-                    // Générer un résultat simulé
+                    // Générer un résultat simulé avec WeTransfer
                     const timestamp = Date.now();
                     const filename = `audio-${timestamp}.mp3`;
                     const filesize = `${(Math.random() * 2 + 1).toFixed(1)} MB`;
                     const duration = `${Math.floor(Math.random() * 3 + 1)}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`;
-                    const fakeLink = `https://glopasshub.accra/audio/${filename}`;
+                    
+                    // Simuler un lien WeTransfer
+                    const transferId = Math.random().toString(36).substring(2, 10);
+                    const fakeLink = `https://wetransfer.com/downloads/${transferId}/${filename}`;
                     
                     // Mettre à jour l'interface
                     document.getElementById('result-link').textContent = fakeLink;
@@ -1205,8 +1279,8 @@
                     document.getElementById('share-btn').disabled = false;
                     document.getElementById('delete-result-btn').disabled = false;
                     
-                    // Réinitialiser le bouton
-                    this.innerHTML = '<i class="fas fa-play"></i> Convertir';
+                    // Cacher le chargement
+                    document.getElementById('text-conversion-loading').style.display = 'none';
                     this.disabled = false;
                     
                     // Enregistrer dans l'historique
@@ -1225,61 +1299,93 @@
                     saveToHistory(conversion);
                     
                     // Afficher une notification
-                    alert('Conversion terminée avec succès !');
-                }, 2000);
+                    showNotification('Conversion terminée - Lien WeTransfer généré');
+                }, conversionTime);
             } else {
-                alert('Veuillez entrer du texte à convertir');
+                showNotification('Veuillez entrer du texte à convertir');
             }
         });
 
-        // Simulation de conversion audio vers texte
+        // Gestion de la reconnaissance vocale
+        function initSpeechRecognition() {
+            // Vérifier la prise en charge par le navigateur
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                console.warn("La reconnaissance vocale n'est pas supportée par votre navigateur");
+                return null;
+            }
+            
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+            
+            // Configuration
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            recognition.lang = 'fr-FR'; // Langue française
+            
+            return recognition;
+        }
+
+        const recognition = initSpeechRecognition();
+        const textToConvert = document.getElementById('text-to-convert');
+        let isRecording = false;
+
+        // Gestion du bouton de transcription audio
         document.getElementById('convert-audio-btn').addEventListener('click', function() {
-            if (audioFile) {
-                // Simuler un temps de conversion
-                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Conversion...';
+            if (!recognition) {
+                showNotification("La reconnaissance vocale n'est pas disponible dans votre navigateur. Essayez Chrome ou Edge.");
+                return;
+            }
+
+            if (!audioFile) {
+                showNotification("Veuillez d'abord sélectionner un fichier audio");
+                return;
+            }
+
+            if (!isRecording) {
+                // Afficher le chargement
+                document.getElementById('audio-conversion-loading').style.display = 'block';
                 this.disabled = true;
                 
+                // Simuler un temps de transcription (3-5 secondes)
+                const transcriptionTime = 3000 + Math.random() * 2000;
+                
                 setTimeout(() => {
-                    // Générer un résultat simulé (transcription aléatoire)
-                    const timestamp = Date.now();
-                    const filename = `transcription-${timestamp}.txt`;
-                    const filesize = `${(audioFile.size / (1024 * 1024)).toFixed(1)} MB`;
-                    const fakeText = "Ceci est une transcription simulée du fichier audio. En réalité, cette application utilise une API de reconnaissance vocale pour convertir l'audio en texte. Voici un exemple de texte transcrit à partir d'un fichier audio.";
-                    const fakeLink = `https://glopasshub.accra/text/${filename}`;
+                    // Générer un texte aléatoire basé sur le nom du fichier
+                    const transcript = `Transcription du fichier ${audioFile.name}:\n\n`;
+                    const lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
                     
-                    // Mettre à jour l'interface
+                    textToConvert.value = transcript + lorem;
+                    
+                    // Simuler un lien WeTransfer pour le fichier texte
+                    const timestamp = Date.now();
+                    const transferId = Math.random().toString(36).substring(2, 10);
+                    const fakeLink = `https://wetransfer.com/downloads/${transferId}/transcription-${timestamp}.txt`;
+                    
                     document.getElementById('result-link').textContent = fakeLink;
                     document.getElementById('result-link').href = fakeLink;
-                    document.getElementById('result-title').textContent = "Votre dernière transcription";
-                    document.getElementById('result-description').textContent = "Voici le lien de téléchargement de votre fichier texte généré :";
                     document.getElementById('download-audio-btn').disabled = false;
                     document.getElementById('copy-link-btn').disabled = false;
                     document.getElementById('share-btn').disabled = false;
                     document.getElementById('delete-result-btn').disabled = false;
                     
-                    // Réinitialiser le bouton
-                    this.innerHTML = '<i class="fas fa-play"></i> Convertir';
+                    // Cacher le chargement
+                    document.getElementById('audio-conversion-loading').style.display = 'none';
                     this.disabled = false;
                     
-                    // Enregistrer dans l'historique
                     const title = `Transcription audio - ${new Date(timestamp).toLocaleDateString()}`;
                     const conversion = {
                         type: 'text',
                         title: title,
-                        content: fakeText,
-                        contentPreview: fakeText.length > 50 ? fakeText.substring(0, 50) + '...' : fakeText,
-                        size: filesize,
+                        content: textToConvert.value,
+                        contentPreview: textToConvert.value.length > 50 ? textToConvert.value.substring(0, 50) + '...' : textToConvert.value,
+                        size: `${(textToConvert.value.length / 1024).toFixed(1)} KB`,
                         timestamp: timestamp,
                         link: fakeLink
                     };
                     
                     saveToHistory(conversion);
-                    
-                    // Afficher une notification
-                    alert('Transcription terminée avec succès !');
-                }, 3000);
-            } else {
-                alert('Veuillez sélectionner un fichier audio');
+                    showNotification('Transcription terminée - Lien WeTransfer généré');
+                }, transcriptionTime);
             }
         });
 
@@ -1290,10 +1396,11 @@
                 // Simuler un téléchargement
                 const a = document.createElement('a');
                 a.href = link;
-                a.download = link.split('/').pop();
+                a.target = '_blank'; // Ouvrir dans un nouvel onglet (simulation WeTransfer)
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
+                showNotification('Redirection vers WeTransfer pour téléchargement');
             }
         });
 
@@ -1304,7 +1411,9 @@
             document.getElementById('download-audio-btn').disabled = true;
             document.getElementById('copy-link-btn').disabled = true;
             document.getElementById('share-btn').disabled = true;
+            
             document.getElementById('delete-result-btn').disabled = true;
+            showNotification('Fichier supprimé');
         });
     </script>
 </body>
