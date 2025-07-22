@@ -937,6 +937,7 @@
         function switchToTextToAudio() {
             // Activer l'onglet Texte vers Audio
             textToAudioTab.classList.add('active');
+            
             audioToTextTab.classList.remove('active');
             
             // Afficher la carte correspondante
@@ -1390,6 +1391,7 @@
         });
 
         // Téléchargement du résultat
+
         document.getElementById('download-audio-btn').addEventListener('click', function() {
             const link = document.getElementById('result-link').textContent;
             if (link && link !== "Aucun fichier généré récemment") {
@@ -1411,7 +1413,7 @@
             document.getElementById('download-audio-btn').disabled = true;
             document.getElementById('copy-link-btn').disabled = true;
             document.getElementById('share-btn').disabled = true;
-            
+
             document.getElementById('delete-result-btn').disabled = true;
             showNotification('Fichier supprimé');
         });
