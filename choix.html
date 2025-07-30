@@ -66,7 +66,7 @@
         }
 
 
-        
+
         
         .circle::before {
             content: '';
@@ -225,6 +225,8 @@
                     particle.style.setProperty('--dm-x', `${50 - parseFloat(particle.dataset.startX)}%`);
                     particle.style.setProperty('--dm-y', `${50 - parseFloat(particle.dataset.startY)}%`);
                 }
+                
+
                 
                 // Appliquer l'animation
                 particle.style.animation = 'formDM 10s infinite';
