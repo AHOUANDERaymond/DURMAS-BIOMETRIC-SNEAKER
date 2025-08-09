@@ -23,17 +23,34 @@
                         },
                         accent: {
                             500: '#F59E0B',  // Jaune-orange
+                            600: '#D97706',
+                        },
+                        dark: {
+                            900: '#0F172A',
+                            800: '#1E293B',
+                            700: '#334155',
                         }
                     },
                     animation: {
                         'float': 'float 6s ease-in-out infinite',
+                        'float-fast': 'float 4s ease-in-out infinite',
                         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'bounce-slow': 'bounce 3s infinite'
+                        'bounce-slow': 'bounce 3s infinite',
+                        'slide-in': 'slideIn 0.5s ease-out forwards',
+                        'fade-in': 'fadeIn 0.8s ease-out forwards',
                     },
                     keyframes: {
                         float: {
                             '0%, 100%': { transform: 'translateY(0)' },
                             '50%': { transform: 'translateY(-15px)' },
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
                         }
                     }
                 }
@@ -65,8 +82,16 @@
             box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
         }
         
+        .glow-effect:hover {
+            box-shadow: 0 0 25px rgba(239, 68, 68, 0.8);
+        }
+        
         .gradient-bg {
             background: linear-gradient(135deg, #EF4444, #F97316);
+        }
+        
+        .gradient-bg-hover:hover {
+            background: linear-gradient(135deg, #DC2626, #EA580C);
         }
         
         .text-gradient {
@@ -74,6 +99,11 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+        }
+        
+        .bg-pattern {
+            background-color: #f8fafc;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ef4444' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
         
         /* Custom scrollbar */
@@ -87,11 +117,80 @@
             background: #EF4444;
             border-radius: 4px;
         }
+        
+        /* Animated border */
+        .animated-border {
+            position: relative;
+        }
+        
+        .animated-border::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #EF4444, #F97316);
+            transition: width 0.3s ease;
+        }
+        
+        .animated-border:hover::after {
+            width: 100%;
+        }
+        
+        /* Pulse animation for CTA */
+        @keyframes pulse-glow {
+            0% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+            }
+        }
+        
+        .pulse-glow {
+            animation: pulse-glow 2s infinite;
+        }
+        
+        /* Product shine effect */
+        .product-shine {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .product-shine::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0) 30%,
+                rgba(255, 255, 255, 0.3) 45%,
+                rgba(255, 255, 255, 0) 60%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(30deg);
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+        
+        .product-card:hover .product-shine::before {
+            opacity: 1;
+            top: -30%;
+            left: -30%;
+        }
     </style>
 </head>
 <body class="bg-gray-50 font-sans">
     <!-- Business Selection Dropdown -->
-    <div class="fixed top-4 left-4 z-50">
+    <div class="fixed top-4 left-4 z-50 animate-fade-in">
         <div class="relative">
             <button 
                 id="businessDropdownButton"
@@ -147,11 +246,11 @@
                 
                 <!-- Desktop Navigation -->
                 <nav class="hidden md:flex space-x-1">
-                    <button onclick="scrollToSection('hero')" class="px-4 py-2 rounded-lg text-gray-700 hover:bg-red-50 hover:text-primary-500 transition-colors">Accueil</button>
-                    <button onclick="scrollToSection('products')" class="px-4 py-2 rounded-lg text-gray-700 hover:bg-red-50 hover:text-primary-500 transition-colors">Collection</button>
-                    <button onclick="scrollToSection('categories')" class="px-4 py-2 rounded-lg text-gray-700 hover:bg-red-50 hover:text-primary-500 transition-colors">Catégories</button>
-                    <button onclick="scrollToSection('about')" class="px-4 py-2 rounded-lg text-gray-700 hover:bg-red-50 hover:text-primary-500 transition-colors">À propos</button>
-                    <button onclick="scrollToSection('testimonials')" class="px-4 py-2 rounded-lg text-gray-700 hover:bg-red-50 hover:text-primary-500 transition-colors">Avis</button>
+                    <button onclick="scrollToSection('hero')" class="px-4 py-2 rounded-lg text-gray-700 hover:bg-red-50 hover:text-primary-500 transition-colors animated-border">Accueil</button>
+                    <button onclick="scrollToSection('products')" class="px-4 py-2 rounded-lg text-gray-700 hover:bg-red-50 hover:text-primary-500 transition-colors animated-border">Collection</button>
+                    <button onclick="scrollToSection('categories')" class="px-4 py-2 rounded-lg text-gray-700 hover:bg-red-50 hover:text-primary-500 transition-colors animated-border">Catégories</button>
+                    <button onclick="scrollToSection('about')" class="px-4 py-2 rounded-lg text-gray-700 hover:bg-red-50 hover:text-primary-500 transition-colors animated-border">À propos</button>
+                    <button onclick="scrollToSection('testimonials')" class="px-4 py-2 rounded-lg text-gray-700 hover:bg-red-50 hover:text-primary-500 transition-colors animated-border">Avis</button>
                 </nav>
                 
                 <!-- Desktop CTA Buttons -->
@@ -168,7 +267,7 @@
                     </button>
                     <button 
                         onclick="scrollToSection('contact')"
-                        class="gradient-bg text-white px-6 py-2 rounded-xl hover:opacity-90 transition-all transform hover:scale-105 smooth-transition shadow-md"
+                        class="gradient-bg text-white px-6 py-2 rounded-xl hover:opacity-90 transition-all transform hover:scale-105 smooth-transition shadow-md glow-effect"
                     >
                         Contact
                     </button>
@@ -210,23 +309,23 @@
     </header>
 
     <!-- Hero Section -->
-    <section id="hero" class="relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-r from-primary-500/10 to-secondary-500/10 z-0"></div>
+    <section id="hero" class="relative overflow-hidden bg-pattern">
+        <div class="absolute inset-0 bg-gradient-to-r from-primary-500/20 to-secondary-500/20 z-0"></div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 relative z-10">
             <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <div class="text-center lg:text-left">
+                <div class="text-center lg:text-left animate-slide-in">
                     <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
                         Chaussures tendance
                         <span class="text-gradient block animate-pulse-slow">pour votre style</span>
                     </h1>
-                    <p class="text-xl text-gray-600 mb-8 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                    <p class="text-xl text-gray-700 mb-8 max-w-xl mx-auto lg:mx-0 leading-relaxed">
                         Découvrez notre collection exclusive de sneakers et chaussures pour hommes et femmes. 
                         Qualité supérieure, confort inégalé et style unique.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                         <button 
                             onclick="scrollToSection('products')"
-                            class="gradient-bg text-white px-8 py-4 rounded-xl text-lg font-semibold hover:opacity-90 transition-all transform hover:scale-105 smooth-transition shadow-lg glow-effect"
+                            class="gradient-bg text-white px-8 py-4 rounded-xl text-lg font-semibold hover:opacity-90 transition-all transform hover:scale-105 smooth-transition shadow-lg glow-effect pulse-glow"
                         >
                             Voir la collection
                             <i data-lucide="arrow-right" class="w-5 h-5 ml-2 inline"></i>
@@ -239,14 +338,14 @@
                         </button>
                     </div>
                 </div>
-                <div class="relative">
-                    <div class="relative animate-float">
+                <div class="relative animate-float">
+                    <div class="relative">
                         <img 
                             src="https://images.unsplash.com/photo-1600269452121-4f2416e55c28?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1065&q=80" 
                             alt="Nouvelle collection de sneakers" 
                             class="rounded-2xl shadow-2xl w-full max-w-xl mx-auto border-4 border-white"
                         />
-                        <div class="absolute -bottom-6 -right-6 bg-white p-4 rounded-xl shadow-lg border border-gray-200">
+                        <div class="absolute -bottom-6 -right-6 bg-white p-4 rounded-xl shadow-lg border border-gray-200 animate-bounce-slow">
                             <div class="flex items-center">
                                 <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mr-3">
                                     <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
@@ -267,30 +366,30 @@
     <section class="py-12 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-2 md:grid-cols-5 gap-8 items-center justify-center">
-                <img src="https://logos-world.net/wp-content/uploads/2020/04/Nike-Logo.png" alt="Nike" class="h-8 object-contain opacity-60 hover:opacity-100 smooth-transition">
-                <img src="https://logos-world.net/wp-content/uploads/2020/04/Adidas-Logo.png" alt="Adidas" class="h-8 object-contain opacity-60 hover:opacity-100 smooth-transition">
-                <img src="https://logos-world.net/wp-content/uploads/2020/04/Puma-Logo.png" alt="Puma" class="h-8 object-contain opacity-60 hover:opacity-100 smooth-transition">
-                <img src="https://logos-world.net/wp-content/uploads/2020/04/New-Balance-Logo.png" alt="New Balance" class="h-8 object-contain opacity-60 hover:opacity-100 smooth-transition">
-                <img src="https://logos-world.net/wp-content/uploads/2020/04/Reebok-Logo.png" alt="Reebok" class="h-8 object-contain opacity-60 hover:opacity-100 smooth-transition">
+                <img src="https://logos-world.net/wp-content/uploads/2020/04/Nike-Logo.png" alt="Nike" class="h-8 object-contain opacity-60 hover:opacity-100 smooth-transition hover:scale-110">
+                <img src="https://logos-world.net/wp-content/uploads/2020/04/Adidas-Logo.png" alt="Adidas" class="h-8 object-contain opacity-60 hover:opacity-100 smooth-transition hover:scale-110">
+                <img src="https://logos-world.net/wp-content/uploads/2020/04/Puma-Logo.png" alt="Puma" class="h-8 object-contain opacity-60 hover:opacity-100 smooth-transition hover:scale-110">
+                <img src="https://logos-world.net/wp-content/uploads/2020/04/New-Balance-Logo.png" alt="New Balance" class="h-8 object-contain opacity-60 hover:opacity-100 smooth-transition hover:scale-110">
+                <img src="https://logos-world.net/wp-content/uploads/2020/04/Reebok-Logo.png" alt="Reebok" class="h-8 object-contain opacity-60 hover:opacity-100 smooth-transition hover:scale-110">
             </div>
         </div>
     </section>
 
     <!-- Categories Section -->
-    <section id="categories" class="py-16 bg-gray-50">
+    <section id="categories" class="py-16 bg-gradient-to-b from-gray-50 to-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                     Parcourez nos <span class="text-gradient">catégories</span>
                 </h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                <p class="text-xl text-gray-700 max-w-2xl mx-auto">
                     Trouvez les chaussures parfaites pour chaque occasion
                 </p>
             </div>
             
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl smooth-transition group relative">
-                    <div class="relative overflow-hidden h-64">
+                    <div class="relative overflow-hidden h-64 product-shine">
                         <img 
                             src="https://images.unsplash.com/photo-1600269452121-4f2416e55c28?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1065&q=80" 
                             alt="Sneakers Homme" 
@@ -306,7 +405,7 @@
                 </div>
                 
                 <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl smooth-transition group relative">
-                    <div class="relative overflow-hidden h-64">
+                    <div class="relative overflow-hidden h-64 product-shine">
                         <img 
                             src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80" 
                             alt="Sneakers Femme" 
@@ -319,7 +418,7 @@
                 </div>
                 
                 <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl smooth-transition group relative">
-                    <div class="relative overflow-hidden h-64">
+                    <div class="relative overflow-hidden h-64 product-shine">
                         <img 
                             src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" 
                             alt="Sneakers Sport" 
@@ -335,7 +434,7 @@
                 </div>
                 
                 <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl smooth-transition group relative">
-                    <div class="relative overflow-hidden h-64">
+                    <div class="relative overflow-hidden h-64 product-shine">
                         <img 
                             src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80" 
                             alt="Sneakers Casual" 
@@ -357,7 +456,7 @@
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                     Notre <span class="text-gradient">collection</span>
                 </h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                <p class="text-xl text-gray-700 max-w-2xl mx-auto">
                     Découvrez nos chaussures les plus populaires
                 </p>
             </div>
@@ -411,11 +510,13 @@
                         <!-- Product 1 -->
                         <div class="product-card bg-white rounded-xl overflow-hidden shadow-lg smooth-transition" data-category="new men">
                             <div class="relative">
-                                <img 
-                                    src="https://images.unsplash.com/photo-1600269452121-4f2416e55c28?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1065&q=80" 
-                                    alt="Nike Air Max" 
-                                    class="w-full h-64 object-cover"
-                                />
+                                <div class="product-shine">
+                                    <img 
+                                        src="https://images.unsplash.com/photo-1600269452121-4f2416e55c28?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1065&q=80" 
+                                        alt="Nike Air Max" 
+                                        class="w-full h-64 object-cover"
+                                    />
+                                </div>
                                 <div class="absolute top-4 right-4">
                                     <button class="bg-white/80 backdrop-blur-sm p-2 rounded-full hover:bg-white smooth-transition">
                                         <i data-lucide="heart" class="w-5 h-5 text-gray-700"></i>
@@ -454,11 +555,13 @@
                         <!-- Product 2 -->
                         <div class="product-card bg-white rounded-xl overflow-hidden shadow-lg smooth-transition" data-category="men">
                             <div class="relative">
-                                <img 
-                                    src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" 
-                                    alt="Puma RS-X" 
-                                    class="w-full h-64 object-cover"
-                                />
+                                <div class="product-shine">
+                                    <img 
+                                        src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" 
+                                        alt="Puma RS-X" 
+                                        class="w-full h-64 object-cover"
+                                    />
+                                </div>
                                 <div class="absolute top-4 right-4">
                                     <button class="bg-white/80 backdrop-blur-sm p-2 rounded-full hover:bg-white smooth-transition">
                                         <i data-lucide="heart" class="w-5 h-5 text-gray-700"></i>
@@ -494,11 +597,13 @@
                         <!-- Product 3 -->
                         <div class="product-card bg-white rounded-xl overflow-hidden shadow-lg smooth-transition" data-category="sale women">
                             <div class="relative">
-                                <img 
-                                    src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1025&q=80" 
-                                    alt="Adidas Ultraboost" 
-                                    class="w-full h-64 object-cover"
-                                />
+                                <div class="product-shine">
+                                    <img 
+                                        src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1025&q=80" 
+                                        alt="Adidas Ultraboost" 
+                                        class="w-full h-64 object-cover"
+                                    />
+                                </div>
                                 <div class="absolute top-4 right-4">
                                     <button class="bg-white/80 backdrop-blur-sm p-2 rounded-full hover:bg-white smooth-transition">
                                         <i data-lucide="heart" class="w-5 h-5 text-gray-700"></i>
@@ -540,11 +645,13 @@
                         <!-- Product 4 -->
                         <div class="product-card bg-white rounded-xl overflow-hidden shadow-lg smooth-transition" data-category="women">
                             <div class="relative">
-                                <img 
-                                    src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80" 
-                                    alt="Nike Air Force" 
-                                    class="w-full h-64 object-cover"
-                                />
+                                <div class="product-shine">
+                                    <img 
+                                        src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80" 
+                                        alt="Nike Air Force" 
+                                        class="w-full h-64 object-cover"
+                                    />
+                                </div>
                                 <div class="absolute top-4 right-4">
                                     <button class="bg-white/80 backdrop-blur-sm p-2 rounded-full hover:bg-white smooth-transition">
                                         <i data-lucide="heart" class="w-5 h-5 text-gray-700"></i>
@@ -593,8 +700,6 @@
         </div>
     </section>
 
-
-
     <!-- Sale Banner -->
     <section class="py-16 bg-gradient-to-r from-primary-500 to-secondary-500">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -607,27 +712,25 @@
                 </p>
                 <button 
                     onclick="scrollToSection('products')"
-                    class="bg-white text-primary-500 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-gray-100 transition-all transform hover:scale-105 smooth-transition shadow-lg"
+                    class="bg-white text-primary-500 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-gray-100 transition-all transform hover:scale-105 smooth-transition shadow-lg pulse-glow"
                 >
-                    Voir les promotions  en cours
+                    Voir les promotions en cours
                 </button>
             </div>
         </div>
-
-
     </section>
 
     <!-- About Section -->
-    <section id="about" class="py-20 bg-gray-50">
+    <section id="about" class="py-20 bg-gradient-to-b from-white to-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <div class="relative">
+                <div class="relative animate-slide-in">
                     <img 
                         src="https://images.unsplash.com/photo-1520006403909-838d6b92c22e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" 
                         alt="À propos de DM Sneakers" 
                         class="rounded-2xl shadow-lg w-full border-4 border-white"
                     />
-                    <div class="absolute -bottom-6 -right-6 bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+                    <div class="absolute -bottom-6 -right-6 bg-white p-6 rounded-xl shadow-lg border border-gray-200 animate-float-fast">
                         <div class="flex items-center">
                             <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mr-3">
                                 <i data-lucide="shopping-bag" class="w-6 h-6 text-primary-500"></i>
@@ -640,16 +743,16 @@
                     </div>
                 </div>
                 
-                <div>
+                <div class="animate-fade-in">
                     <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
                         Notre <span class="text-gradient">histoire</span>
                     </h2>
-                    <p class="text-gray-600 mb-4 leading-relaxed">
+                    <p class="text-gray-700 mb-4 leading-relaxed">
                         Fondée en 2022, DM Sneakers est née de la passion pour la mode et les sneakers. 
                         Notre mission est simple : offrir des chaussures de qualité à des prix accessibles 
                         pour tous les amateurs de style en Afrique de l'Ouest.
                     </p>
-                    <p class="text-gray-600 mb-6 leading-relaxed">
+                    <p class="text-gray-700 mb-6 leading-relaxed">
                         Nous sélectionnons méticuleusement chaque paire dans notre collection pour vous 
                         garantir confort, durabilité et style. Que vous cherchiez des sneakers tendance, 
                         des chaussures de sport performantes ou des modèles classiques, nous avons ce qu'il vous faut.
@@ -676,7 +779,7 @@
                     </div>
                     <button 
                         onclick="scrollToSection('contact')"
-                        class="gradient-bg text-white px-8 py-3 rounded-xl hover:opacity-90 smooth-transition shadow-md"
+                        class="gradient-bg text-white px-8 py-3 rounded-xl hover:opacity-90 smooth-transition shadow-md glow-effect"
                     >
                         En savoir plus...
                     </button>
@@ -692,13 +795,13 @@
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                     Ce que disent <span class="text-gradient">nos clients</span>
                 </h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                <p class="text-xl text-gray-700 max-w-2xl mx-auto">
                     Des témoignages authentiques de clients satisfaits
                 </p>
             </div>
             
             <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-gray-50 p-8 rounded-xl hover:shadow-md smooth-transition">
+                <div class="bg-gray-50 p-8 rounded-xl hover:shadow-md smooth-transition animate-slide-in" style="animation-delay: 0.1s">
                     <div class="flex mb-4">
                         <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
                         <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
@@ -706,7 +809,7 @@
                         <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
                         <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
                     </div>
-                    <p class="text-gray-600 mb-6 italic">"Livraison ultra rapide et chaussures encore plus belles en vrai qu'en photo. Je recommande vivement DM Sneakers !"</p>
+                    <p class="text-gray-700 mb-6 italic">"Livraison ultra rapide et chaussures encore plus belles en vrai qu'en photo. Je recommande vivement DM Sneakers !"</p>
                     <div class="flex items-center">
                         <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mr-4">
                             <span class="text-primary-500 font-semibold">K</span>
@@ -718,7 +821,7 @@
                     </div>
                 </div>
                 
-                <div class="bg-gray-50 p-8 rounded-xl hover:shadow-md smooth-transition">
+                <div class="bg-gray-50 p-8 rounded-xl hover:shadow-md smooth-transition animate-slide-in" style="animation-delay: 0.2s">
                     <div class="flex mb-4">
                         <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
                         <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
@@ -726,7 +829,7 @@
                         <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
                         <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
                     </div>
-                    <p class="text-gray-600 mb-6 italic">"Service client exceptionnel. J'ai eu un problème avec ma taille et ils ont tout fait pour m'échanger rapidement la paire."</p>
+                    <p class="text-gray-700 mb-6 italic">"Service client exceptionnel. J'ai eu un problème avec ma taille et ils ont tout fait pour m'échanger rapidement la paire."</p>
                     <div class="flex items-center">
                         <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mr-4">
                             <span class="text-primary-500 font-semibold">A</span>
@@ -738,7 +841,7 @@
                     </div>
                 </div>
                 
-                <div class="bg-gray-50 p-8 rounded-xl hover:shadow-md smooth-transition">
+                <div class="bg-gray-50 p-8 rounded-xl hover:shadow-md smooth-transition animate-slide-in" style="animation-delay: 0.3s">
                     <div class="flex mb-4">
                         <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
                         <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
@@ -746,7 +849,7 @@
                         <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
                         <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
                     </div>
-                    <p class="text-gray-600 mb-6 italic">"La qualité est au rendez-vous. Mes Nike Air Max sont super confortables et tiennent bien la route. Je reviendrai !"</p>
+                    <p class="text-gray-700 mb-6 italic">"La qualité est au rendez-vous. Mes Nike Air Max sont super confortables et tiennent bien la route. Je reviendrai !"</p>
                     <div class="flex items-center">
                         <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mr-4">
                             <span class="text-primary-500 font-semibold">E</span>
@@ -773,7 +876,7 @@
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <button 
                     onclick="scrollToSection('products')"
-                    class="bg-white text-primary-500 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-gray-100 transition-all transform hover:scale-105 smooth-transition shadow-lg"
+                    class="bg-white text-primary-500 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-gray-100 transition-all transform hover:scale-105 smooth-transition shadow-lg pulse-glow"
                 >
                     Acheter maintenant
                 </button>
@@ -794,13 +897,13 @@
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                     <span class="text-gradient">Contactez-nous</span>
                 </h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                <p class="text-xl text-gray-700 max-w-2xl mx-auto">
                     Notre équipe est là pour répondre à toutes vos questions
                 </p>
             </div>
             
             <div class="grid md:grid-cols-2 gap-12">
-                <div>
+                <div class="animate-slide-in">
                     <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-200">
                         <form class="space-y-6">
                             <div>
@@ -824,14 +927,14 @@
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Message *</label>
                                 <textarea rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent" required></textarea>
                             </div>
-                            <button type="submit" class="w-full gradient-bg text-white py-3 rounded-xl font-semibold hover:opacity-90 smooth-transition shadow-md">
+                            <button type="submit" class="w-full gradient-bg text-white py-3 rounded-xl font-semibold hover:opacity-90 smooth-transition shadow-md glow-effect">
                                 Envoyer le message
                             </button>
                         </form>
                     </div>
                 </div>
                 
-                <div>
+                <div class="animate-fade-in" style="animation-delay: 0.2s">
                     <div class="bg-gray-50 p-8 rounded-xl h-full border border-gray-200">
                         <h3 class="text-xl font-semibold text-gray-900 mb-6">Nos coordonnées</h3>
                         
@@ -866,8 +969,6 @@
                                     <p class="text-gray-600">contact@dmsneakers.com</p>
                                 </div>
                             </div>
-
-
                             
                             <div class="flex items-start">
                                 <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center mr-4">
@@ -949,7 +1050,6 @@
                         <li><a href="#" class="hover:text-white smooth-transition">Livraison</a></li>
                         <li><a href="#" class="hover:text-white smooth-transition">Paiement</a></li>
                         <li><a href="#" class="hover:text-white smooth-transition">Retours</a></li>
-                        <!-- <li><a href="#" class="hover:text-white smooth-transition">FAQ</a></li> -->
                     </ul>
                 </div>
                 
@@ -1097,7 +1197,7 @@
                     <span>Total</span>
                     <span class="text-primary-500">144.000 FCFA</span>
                 </div>
-                <button class="w-full gradient-bg text-white py-3 rounded-xl font-semibold hover:opacity-90 smooth-transition shadow-md">
+                <button class="w-full gradient-bg text-white py-3 rounded-xl font-semibold hover:opacity-90 smooth-transition shadow-md glow-effect">
                     Passer la commande
                 </button>
                 <button 
@@ -1114,6 +1214,13 @@
         // Initialize Lucide icons
         document.addEventListener('DOMContentLoaded', function() {
             lucide.createIcons();
+            
+            // Add animation classes to elements for staggered animations
+            const animateElements = document.querySelectorAll('.animate-slide-in, .animate-fade-in');
+            animateElements.forEach((el, index) => {
+                // Set delay based on index for staggered effect
+                el.style.animationDelay = `${index * 0.1}s`;
+            });
         });
 
         // Business dropdown toggle
@@ -1171,12 +1278,17 @@
         document.querySelectorAll('.product-card button:first-child').forEach(button => {
             button.addEventListener('click', function() {
                 openCartSidebar();
+                
+                // Add a small animation to the cart icon in header
+                const cartIcon = document.querySelector('header [data-lucide="shopping-cart"]');
+                if (cartIcon) {
+                    cartIcon.parentElement.classList.add('animate-ping');
+                    setTimeout(() => {
+                        cartIcon.parentElement.classList.remove('animate-ping');
+                    }, 500);
+                }
             });
         });
-
-
-
-        
 
         // Tab functionality
         function changeTab(tabId) {
@@ -1190,7 +1302,7 @@
 
             // Here you would typically filter products based on the tab
             // For this example, we'll just show a simple alert
-            alert(`Affichage des produits de la catégorie: ${tabId}`);
+            console.log(`Affichage des produits de la catégorie: ${tabId}`);
             
             // In a real implementation, you would:
             // 1. Hide all products
